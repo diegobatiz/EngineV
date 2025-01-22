@@ -1,0 +1,8 @@
+By default there is very little error checking in Vulkan.
+Mistakes can generally result in crashes or undefined behaviour.
+Checks can be added into the API 
+These are validation layers
+
+Can be freely stacked to include all debug functionality that you need.
+Not included in Vulkan by default but
+included in the LunarG Vulkan SDK
