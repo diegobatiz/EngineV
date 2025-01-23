@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <vector>
+#include <optional>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -20,6 +21,16 @@ const bool enableValidationLayers = false;
 #else
 const bool gEnableValidationLayers = true;
 #endif
+
+struct QueueFamilyIndices
+{
+	std::optional<uint32_t> graphicsFamily;
+
+	bool isComplete()
+	{
+		return graphicsFamily.has_value();
+	}
+};
 
 class HelloTriangleApplication
 {
@@ -40,7 +51,14 @@ private:
 	void createInstance();
 	bool checkValidationLayerSupport();
 	std::vector<const char*> getRequiredExtensions();
+	
 	void setupDebugMessenger();
+
+	void pickPhysicalDevice();
+	bool isDeviceSuitable(VkPhysicalDevice device);
+	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+
+	void createLogicalDevice();
 	
 	void mainLoop();
 
@@ -48,6 +66,15 @@ private:
 
 private:
 	GLFWwindow* mWindow = nullptr;
+
 	VkInstance mInstance;
+	
 	VkDebugUtilsMessengerEXT mDebugMessenger;
+	
+	VkPhysicalDevice mPhysicalDevice = VK_NULL_HANDLE;
+	VkPhysicalDeviceFeatures mDeviceFeatures{};
+	
+	VkDevice mDevice;
+	
+	VkQueue mGraphicsQueue;
 };
