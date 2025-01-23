@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <vector>
 #include <optional>
+#include <set>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -25,10 +26,11 @@ const bool gEnableValidationLayers = true;
 struct QueueFamilyIndices
 {
 	std::optional<uint32_t> graphicsFamily;
+	std::optional<uint32_t> presentFamily;
 
 	bool isComplete()
 	{
-		return graphicsFamily.has_value();
+		return graphicsFamily.has_value() && presentFamily.has_value();
 	}
 };
 
@@ -44,8 +46,10 @@ public:
 	}
 
 private:
+	//Window Initialization
 	void initWindow();
 
+	//Vulkan Initialization
 	void initVulkan();
 	
 	void createInstance();
@@ -54,12 +58,15 @@ private:
 	
 	void setupDebugMessenger();
 
+	void createSurface();
+
 	void pickPhysicalDevice();
 	bool isDeviceSuitable(VkPhysicalDevice device);
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 
 	void createLogicalDevice();
 	
+	//Main Loop
 	void mainLoop();
 
 	void cleanup();
@@ -71,10 +78,13 @@ private:
 	
 	VkDebugUtilsMessengerEXT mDebugMessenger;
 	
+	VkSurfaceKHR mSurface;
+
 	VkPhysicalDevice mPhysicalDevice = VK_NULL_HANDLE;
 	VkPhysicalDeviceFeatures mDeviceFeatures{};
 	
 	VkDevice mDevice;
 	
 	VkQueue mGraphicsQueue;
+	VkQueue mPresentQueue;
 };
