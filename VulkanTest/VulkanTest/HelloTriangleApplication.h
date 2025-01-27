@@ -8,6 +8,8 @@
 #include <vector>
 #include <optional>
 #include <set>
+#include <limits>
+#include <algorithm>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -37,6 +39,13 @@ struct QueueFamilyIndices
 	{
 		return graphicsFamily.has_value() && presentFamily.has_value();
 	}
+};
+
+struct SwapChainSupportDetails
+{
+	VkSurfaceCapabilitiesKHR capabilities;
+	std::vector<VkSurfaceFormatKHR> formats;
+	std::vector<VkPresentModeKHR> presentModes;
 };
 
 class HelloTriangleApplication
@@ -70,8 +79,14 @@ private:
 	bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+	SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
 
 	void createLogicalDevice();
+
+	void createSwapChain();
+	VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+	VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+	VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 	
 	//Main Loop
 	void mainLoop();
@@ -84,14 +99,15 @@ private:
 	VkInstance mInstance;
 	
 	VkDebugUtilsMessengerEXT mDebugMessenger;
-	
 	VkSurfaceKHR mSurface;
-
 	VkPhysicalDevice mPhysicalDevice = VK_NULL_HANDLE;
 	VkPhysicalDeviceFeatures mDeviceFeatures{};
-	
 	VkDevice mDevice;
+	VkSwapchainKHR mSwapChain;
 	
 	VkQueue mGraphicsQueue;
 	VkQueue mPresentQueue;
+
+	VkFormat mSwapChainImageFormat;
+	VkExtent2D mSwapChainExtent;
 };
