@@ -69,6 +69,7 @@ void HelloTriangleApplication::initVulkan()
 	pickPhysicalDevice();
 	createLogicalDevice();
 	createSwapChain();
+	createImageViews();
 }
 
 void HelloTriangleApplication::createInstance()
@@ -382,7 +383,7 @@ void HelloTriangleApplication::createSwapChain()
 	createInfo.imageArrayLayers = 1;
 	createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 	//This image usage renders directly to the swap chain. 
-	//If we want to do post processing, use something else likeVK_IMAGE_USAGE_TRANSFER_DST_BIT
+	//If we want to do post processing, use something else like VK_IMAGE_USAGE_TRANSFER_DST_BIT
 
 	QueueFamilyIndices indices = findQueueFamilies(mPhysicalDevice);
 	uint32_t queueFamilyIndices[] = { indices.graphicsFamily.value(), indices.presentFamily.value() };
@@ -419,6 +420,7 @@ void HelloTriangleApplication::createSwapChain()
 
 	mSwapChainImageFormat = surfaceFormat.format;
 	mSwapChainExtent = extent;
+	mSwapChainImages.resize(imageCount);
 }
 
 VkSurfaceFormatKHR HelloTriangleApplication::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
@@ -473,6 +475,37 @@ VkExtent2D HelloTriangleApplication::chooseSwapExtent(const VkSurfaceCapabilitie
 	}
 }
 
+void HelloTriangleApplication::createImageViews()
+{
+	mSwapChainImageViews.resize(mSwapChainImages.size());
+
+	for (size_t i = 0; i < mSwapChainImages.size(); ++i)
+	{
+		VkImageViewCreateInfo createInfo{};
+		createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+		createInfo.image = mSwapChainImages[i];
+
+		createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+		createInfo.format = mSwapChainImageFormat;
+		//These specify how image data should be interpreted ex. 1D Texture, 3D Texture
+
+		createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+		createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+		createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+		createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+		createInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		createInfo.subresourceRange.baseMipLevel = 0;
+		createInfo.subresourceRange.levelCount = 1;
+		createInfo.subresourceRange.baseArrayLayer = 0;
+		createInfo.subresourceRange.layerCount = 1;
+
+		if (vkCreateImageView(mDevice, &createInfo, nullptr, &mSwapChainImageViews[i]) != VK_SUCCESS)
+		{
+			throw std::runtime_error("Failed to create image views");
+		}
+	}
+}
+
 void HelloTriangleApplication::mainLoop()
 {
 	while (!glfwWindowShouldClose(mWindow))
@@ -483,6 +516,10 @@ void HelloTriangleApplication::mainLoop()
 
 void HelloTriangleApplication::cleanup()
 {
+	for (auto imageView : mSwapChainImageViews)
+	{
+		vkDestroyImageView(mDevice, imageView, nullptr);
+	}
 	vkDestroySwapchainKHR(mDevice, mSwapChain, nullptr);
 	vkDestroyDevice(mDevice, nullptr);
 	if (gEnableValidationLayers)
