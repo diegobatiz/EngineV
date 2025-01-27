@@ -506,6 +506,11 @@ void HelloTriangleApplication::createImageViews()
 	}
 }
 
+void HelloTriangleApplication::createGraphicsPipeline()
+{
+
+}
+
 void HelloTriangleApplication::mainLoop()
 {
 	while (!glfwWindowShouldClose(mWindow))

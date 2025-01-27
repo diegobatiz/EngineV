@@ -89,6 +89,8 @@ private:
 	VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 
 	void createImageViews();
+
+	void createGraphicsPipeline();
 	
 	//Main Loop
 	void mainLoop();
