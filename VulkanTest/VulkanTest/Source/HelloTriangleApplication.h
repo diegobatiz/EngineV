@@ -10,6 +10,7 @@
 #include <set>
 #include <limits>
 #include <algorithm>
+#include <fstream>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -90,7 +91,10 @@ private:
 
 	void createImageViews();
 
+	void createRenderPass();
+
 	void createGraphicsPipeline();
+	VkShaderModule createShaderModule(const std::vector<char>& code);
 	
 	//Main Loop
 	void mainLoop();
@@ -109,6 +113,8 @@ private:
 	VkSurfaceKHR mSurface;
 	VkDevice mDevice;
 	VkSwapchainKHR mSwapChain;
+	VkRenderPass mRenderPass;
+	VkPipeline mGraphicsPipeline;
 	
 	VkQueue mGraphicsQueue;
 	VkQueue mPresentQueue;
@@ -117,4 +123,6 @@ private:
 	VkFormat mSwapChainImageFormat;
 	VkExtent2D mSwapChainExtent;
 	std::vector<VkImageView> mSwapChainImageViews;
+
+	VkPipelineLayout mPipelineLayout;
 };

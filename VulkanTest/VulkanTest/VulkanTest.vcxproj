@@ -135,15 +135,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="HelloTriangleApplication.cpp" />
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="HelloTriangleApplication.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Shaders\shader.frag" />
     <None Include="Shaders\shader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\HelloTriangleApplication.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\HelloTriangleApplication.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
