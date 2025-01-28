@@ -95,6 +95,8 @@ private:
 
 	void createGraphicsPipeline();
 	VkShaderModule createShaderModule(const std::vector<char>& code);
+
+	void createFrameBuffers();
 	
 	//Main Loop
 	void mainLoop();
@@ -115,6 +117,8 @@ private:
 	VkSwapchainKHR mSwapChain;
 	VkRenderPass mRenderPass;
 	VkPipeline mGraphicsPipeline;
+	std::vector<VkFramebuffer> mSwapChainFramebuffers;
+	VkCommandPool mCommandPool;
 	
 	VkQueue mGraphicsQueue;
 	VkQueue mPresentQueue;
