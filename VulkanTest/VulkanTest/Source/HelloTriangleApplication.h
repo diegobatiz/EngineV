@@ -97,9 +97,18 @@ private:
 	VkShaderModule createShaderModule(const std::vector<char>& code);
 
 	void createFrameBuffers();
+
+	void createCommandPool();
 	
+	void createCommandBuffer();
+	void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+
+	void createSyncObjects();
+
 	//Main Loop
 	void mainLoop();
+
+	void drawFrame();
 
 	void cleanup();
 
@@ -119,6 +128,7 @@ private:
 	VkPipeline mGraphicsPipeline;
 	std::vector<VkFramebuffer> mSwapChainFramebuffers;
 	VkCommandPool mCommandPool;
+	VkCommandBuffer mCommandBuffer;
 	
 	VkQueue mGraphicsQueue;
 	VkQueue mPresentQueue;
@@ -129,4 +139,8 @@ private:
 	std::vector<VkImageView> mSwapChainImageViews;
 
 	VkPipelineLayout mPipelineLayout;
+
+	VkSemaphore mImageAvailableSemaphore;
+	VkSemaphore mRenderFinishedSemaphore;
+	VkFence mInFlightFence;
 };
