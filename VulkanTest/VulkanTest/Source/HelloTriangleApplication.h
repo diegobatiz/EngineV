@@ -14,6 +14,7 @@
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
+const int MAX_FRAMES_IN_FLIGHT = 2;
 
 const std::vector<const char*> gValidationLayers =
 {
@@ -60,6 +61,8 @@ public:
 		cleanup();
 	}
 
+	bool mFrameBufferResized = false;
+
 private:
 	//Window Initialization
 	void initWindow();
@@ -100,7 +103,7 @@ private:
 
 	void createCommandPool();
 	
-	void createCommandBuffer();
+	void createCommandBuffers();
 	void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 
 	void createSyncObjects();
@@ -109,6 +112,9 @@ private:
 	void mainLoop();
 
 	void drawFrame();
+
+	void recreateSwapChain();
+	void cleanupSwapChain();
 
 	void cleanup();
 
@@ -128,7 +134,7 @@ private:
 	VkPipeline mGraphicsPipeline;
 	std::vector<VkFramebuffer> mSwapChainFramebuffers;
 	VkCommandPool mCommandPool;
-	VkCommandBuffer mCommandBuffer;
+	std::vector<VkCommandBuffer> mCommandBuffers;
 	
 	VkQueue mGraphicsQueue;
 	VkQueue mPresentQueue;
@@ -140,7 +146,9 @@ private:
 
 	VkPipelineLayout mPipelineLayout;
 
-	VkSemaphore mImageAvailableSemaphore;
-	VkSemaphore mRenderFinishedSemaphore;
-	VkFence mInFlightFence;
+	std::vector<VkSemaphore> mImageAvailableSemaphores;
+	std::vector<VkSemaphore> mRenderFinishedSemaphores;
+	std::vector<VkFence> mInFlightFences;
+		
+	uint32_t mCurrentFrame = 0;
 };
