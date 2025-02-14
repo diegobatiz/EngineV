@@ -1,5 +1,6 @@
 #pragma once
 #define GLFW_INCLUDE_VULKAN
+#define GLM_FORCE_RADIANS
 #include<GLFW/glfw3.h>
 
 #include <iostream>
@@ -12,11 +13,13 @@
 #include <algorithm>
 #include <fstream>
 #include <glm/glm.hpp>
+#include<glm/gtc/matrix_transform.hpp>
+#include <chrono>
 #include <array>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
-const int MAX_FRAMES_IN_FLIGHT = 2;
+const int MAX_FRAMES_IN_FLIGHT = 1;
 
 const std::vector<const char*> gValidationLayers =
 {
@@ -85,6 +88,13 @@ struct Vertex
 	}
 };
 
+struct UniformBufferObject
+{
+	glm::mat4 model;
+	glm::mat4 view;
+	glm::mat4 proj;
+};
+
 class HelloTriangleApplication
 {
 public:
@@ -144,6 +154,8 @@ private:
 
 	void createRenderPass();
 
+	void createDescriptorSetLayout();
+
 	void createGraphicsPipeline();
 	VkShaderModule createShaderModule(const std::vector<char>& code);
 
@@ -154,6 +166,9 @@ private:
 	void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 	void createVertexBuffer();
 	void createIndexBuffer();
+	void createUniformBuffers();
+	void createDescriptorPool();
+	void createDescriptorSets();
 	void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 	uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 	
@@ -166,6 +181,7 @@ private:
 	void mainLoop();
 
 	void drawFrame();
+	void updateUniformBuffer(uint32_t currentImage);
 
 	void recreateSwapChain();
 	void cleanupSwapChain();
@@ -195,6 +211,13 @@ private:
 	VkBuffer mIndexBuffer;
 	VkDeviceMemory mIndexBufferMemory;
 
+	std::vector<VkBuffer> mUniformBuffers;
+	std::vector<VkDeviceMemory> mUniformBuffersMemory;
+	std::vector<void*> mUniformBuffersMapped;
+
+	VkDescriptorPool mDescriptorPool;
+	std::vector<VkDescriptorSet> mDescriptorSets;
+
 	VkQueue mGraphicsQueue;
 	VkQueue mPresentQueue;
 
@@ -203,6 +226,7 @@ private:
 	VkExtent2D mSwapChainExtent;
 	std::vector<VkImageView> mSwapChainImageViews;
 
+	VkDescriptorSetLayout mDescriptorSetLayout;
 	VkPipelineLayout mPipelineLayout;
 
 	std::vector<VkSemaphore> mImageAvailableSemaphores;
