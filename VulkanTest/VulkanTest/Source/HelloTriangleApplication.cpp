@@ -821,12 +821,10 @@ void HelloTriangleApplication::createBuffer(VkDeviceSize size, VkBufferUsageFlag
 		throw std::runtime_error("Failed to allocate buffer memory");
 	}
 
-	vkBindBufferMemory(mDevice, buffer, bufferMemory, 0);
+	//SHOULDN"T USE ALLOCATE MEMORY IN A REAL APPLICATION
+	//VULKAN MEMORY ALLOCATION LIBRARY?
 
-	void* data;
-	vkMapMemory(mDevice, mVertexBufferMemory, 0, bufferInfo.size, 0, &data);
-		memcpy(data, vertices.data(), (size_t)bufferInfo.size);
-	vkUnmapMemory(mDevice, mVertexBufferMemory);
+	vkBindBufferMemory(mDevice, buffer, bufferMemory, 0);
 }
 
 void HelloTriangleApplication::createVertexBuffer()
@@ -843,6 +841,11 @@ void HelloTriangleApplication::createVertexBuffer()
 	vkUnmapMemory(mDevice, stagingBufferMemory);
 
 	createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, mVertexBuffer, mVertexBufferMemory);
+
+	copyBuffer(stagingBuffer, mVertexBuffer, bufferSize);
+
+	vkDestroyBuffer(mDevice, stagingBuffer, nullptr);
+	vkFreeMemory(mDevice, stagingBufferMemory, nullptr);
 }
 
 void HelloTriangleApplication::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size)
@@ -867,6 +870,16 @@ void HelloTriangleApplication::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer
 	copyRegion.dstOffset = 0;
 	copyRegion.size = size;
 	vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
+	vkEndCommandBuffer(commandBuffer);
+
+	VkSubmitInfo submitInfo{};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &commandBuffer;
+
+	vkQueueSubmit(mGraphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
+	vkQueueWaitIdle(mGraphicsQueue);
+	vkFreeCommandBuffers(mDevice, mCommandPool, 1, &commandBuffer);
 }
 
 uint32_t HelloTriangleApplication::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
