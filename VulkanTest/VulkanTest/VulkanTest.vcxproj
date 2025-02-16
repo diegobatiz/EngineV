@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\diego\OneDrive\Documents\Visual Studio 2022\Libraries\glfw-3.4.bin.WIN64\include;C:\Users\diego\OneDrive\Documents\Visual Studio 2022\Libraries\glm-1.0.1;C:\Dev\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\External;C:\Users\diego\OneDrive\Documents\Visual Studio 2022\Libraries\glfw-3.4.bin.WIN64\include;C:\Users\diego\OneDrive\Documents\Visual Studio 2022\Libraries\glm-1.0.1;C:\Dev\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -139,10 +139,12 @@
     <None Include="Shaders\shader.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\HelloTexture.cpp" />
     <ClCompile Include="Source\HelloTriangleApplication.cpp" />
     <ClCompile Include="Source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\HelloTexture.h" />
     <ClInclude Include="Source\HelloTriangleApplication.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

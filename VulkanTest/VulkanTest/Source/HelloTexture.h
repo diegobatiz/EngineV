@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <fstream>
 #include <glm/glm.hpp>
-#include<glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <chrono>
 #include <array>
 
@@ -162,6 +162,14 @@ private:
 	void createFrameBuffers();
 
 	void createCommandPool();
+	VkCommandBuffer beginSingleTimeCommands();
+	void endSingleTimeCommands(VkCommandBuffer commandBuffer);
+
+	void createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling,
+		VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
+	void createTextureImage();
+	void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
+	void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 
 	void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 	void createVertexBuffer();
@@ -232,6 +240,9 @@ private:
 	std::vector<VkSemaphore> mImageAvailableSemaphores;
 	std::vector<VkSemaphore> mRenderFinishedSemaphores;
 	std::vector<VkFence> mInFlightFences;
+
+	VkImage mTextureImage;
+	VkDeviceMemory mTextureImageMemory;
 
 	uint32_t mCurrentFrame = 0;
 };

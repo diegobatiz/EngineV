@@ -1,8 +1,8 @@
-#include "HelloTriangleApplication.h"
+#include "HelloTexture.h"
 
 int main()
 {
-	HelloTriangleApplication app;
+	HelloTextureApplication app;
 
 	try 
 	{
