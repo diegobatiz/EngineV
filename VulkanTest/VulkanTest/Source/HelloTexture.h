@@ -71,9 +71,9 @@ struct Vertex
 		return bindingDescription;
 	}
 
-	static std::array<VkVertexInputAttributeDescription, 2> getAttributeDescriptions()
+	static std::array<VkVertexInputAttributeDescription, 3> getAttributeDescriptions()
 	{
-		std::array<VkVertexInputAttributeDescription, 2> attributeDesciptions{};
+		std::array<VkVertexInputAttributeDescription, 3> attributeDesciptions{};
 		attributeDesciptions[0].binding = 0;
 		attributeDesciptions[0].location = 0;
 		attributeDesciptions[0].format = VK_FORMAT_R32G32_SFLOAT;
