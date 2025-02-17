@@ -59,6 +59,7 @@ struct Vertex
 {
 	glm::vec2 pos;
 	glm::vec3 color;
+	glm::vec2 texCoord;
 
 	static VkVertexInputBindingDescription getBindingDescription()
 	{
@@ -83,6 +84,10 @@ struct Vertex
 		attributeDesciptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
 		attributeDesciptions[1].offset = offsetof(Vertex, color);
 
+		attributeDesciptions[2].binding = 0;
+		attributeDesciptions[2].location = 2;
+		attributeDesciptions[2].format = VK_FORMAT_R32G32_SFLOAT;
+		attributeDesciptions[2].offset = offsetof(Vertex, texCoord);
 
 		return attributeDesciptions;
 	}
@@ -111,10 +116,10 @@ public:
 private:
 	const std::vector<Vertex> vertices =
 	{
-		{{-0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}},
-		{{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
-		{{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
-		{{-0.5f, 0.5f}, {1.0f, 0.0f, 0.0f}},
+		{{-0.5f, -0.5f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
+		{{ 0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
+		{{ 0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
+		{{-0.5f,  0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
 	};
 
 	const std::vector<uint16_t> indices =
@@ -170,6 +175,10 @@ private:
 	void createTextureImage();
 	void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
 	void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
+	VkImageView createImageView(VkImage image, VkFormat format);
+	void createTextureImageView();
+
+	void createTextureSampler();
 
 	void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 	void createVertexBuffer();
@@ -202,7 +211,6 @@ private:
 	VkInstance mInstance;
 
 	VkPhysicalDevice mPhysicalDevice = VK_NULL_HANDLE;
-	VkPhysicalDeviceFeatures mDeviceFeatures{};
 
 	VkDebugUtilsMessengerEXT mDebugMessenger;
 	VkSurfaceKHR mSurface;
@@ -243,6 +251,8 @@ private:
 
 	VkImage mTextureImage;
 	VkDeviceMemory mTextureImageMemory;
+	VkImageView mTextureImageView;
+	VkSampler mTextureSampler;
 
 	uint32_t mCurrentFrame = 0;
 };
