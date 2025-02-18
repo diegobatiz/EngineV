@@ -15,9 +15,21 @@
     <ClInclude Include="Source\EngineV\Application.h" />
     <ClInclude Include="Source\EngineV\Core.h" />
     <ClInclude Include="Source\EngineV\Entrypoint.h" />
+    <ClInclude Include="Source\EngineV\Window.h" />
+    <ClInclude Include="Source\Precompiled.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\EngineV\Application.cpp" />
+    <ClCompile Include="Source\EngineV\Application.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Precompiled.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Source\EngineV\Window.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Precompiled.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Source\Precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -64,6 +76,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Dev\VulkanSDK\Include;$(SolutionDir)External\glm-1.0.1;$(SolutionDir)External\GLFW\include;$(SolutionDir)External\stb</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>../Precompiled.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

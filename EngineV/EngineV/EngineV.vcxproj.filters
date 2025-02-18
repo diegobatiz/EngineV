@@ -27,9 +27,21 @@
     <ClInclude Include="Source\EngineV\Entrypoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\EngineV\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Precompiled.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EngineV\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EngineV\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Precompiled.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
