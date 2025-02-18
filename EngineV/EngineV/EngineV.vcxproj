@@ -63,13 +63,13 @@
       <PreprocessorDefinitions>EV_PLATFORM_WINDOWS;EV_BUILD_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\glm-1.0.1;$(SolutionDir)External\GLFW\include;$(SolutionDir)External\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\VulkanSDK\Include;$(SolutionDir)External\glm-1.0.1;$(SolutionDir)External\GLFW\include;$(SolutionDir)External\stb</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)External\GLFW\lib-vc2022;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)External\GLFW\lib-vc2022;C:\Dev\VulkanSDK\Lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -80,7 +80,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>EV_PLATFORM_WINDOWS;EV_BUILD_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\glm-1.0.1;$(SolutionDir)External\GLFW\include;$(SolutionDir)External\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\VulkanSDK\Include;$(SolutionDir)External\glm-1.0.1;$(SolutionDir)External\GLFW\include;$(SolutionDir)External\stb</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
