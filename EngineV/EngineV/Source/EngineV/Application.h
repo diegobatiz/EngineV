@@ -9,7 +9,9 @@ namespace EngineV
 		Application();
 		virtual ~Application();
 
-		void Run();
+		virtual void Run();
+	
+		bool mFrameBufferResized = false;
 	};
 
 	// Defined in client
