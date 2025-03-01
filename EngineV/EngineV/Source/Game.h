@@ -1,16 +1,22 @@
-#include <EngineV.h>
+#include "Application.h"
+#include "Window.h"
+#include "Renderer.h"
 
 class Sandbox : public EngineV::Application
 {
-public: 
+public:
 	Sandbox()
 	{
 		mWindow.InitWindow(800, 600, this);
+		mRenderer = new EngineV::Renderer("Sandbox", mWindow);
+		mRenderer->Initialize();
 	}
 
 	~Sandbox()
 	{
-
+		mRenderer->Terminate();
+		delete mRenderer;
+		mWindow.Terminate();
 	}
 
 	void Run() override
@@ -23,6 +29,7 @@ public:
 
 private:
 	EngineV::Window mWindow;
+	EngineV::Renderer* mRenderer;
 };
 
 EngineV::Application* EngineV::CreateApplication()

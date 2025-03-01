@@ -33,7 +33,7 @@ const std::vector<const char*> gDeviceExtensions =
 };
 
 #ifdef NDEBUG
-const bool enableValidationLayers = false;
+const bool gEnableValidationLayers = false;
 #else
 const bool gEnableValidationLayers = true;
 #endif
