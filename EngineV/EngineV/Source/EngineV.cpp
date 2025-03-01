@@ -1,7 +1,9 @@
 #include "Precompiled.h"
-#include <iostream>
+#include "Game.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	auto app = new Sandbox();
+	app->Run();
+	delete app;
 }

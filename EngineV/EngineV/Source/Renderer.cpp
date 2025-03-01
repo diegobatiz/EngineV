@@ -67,6 +67,8 @@ EngineV::Renderer::~Renderer()
 void EngineV::Renderer::Initialize()
 {
 	CreateInstance();
+	SetupDebugMessenger();
+	CreateSurface();
 }
 
 void EngineV::Renderer::Terminate()

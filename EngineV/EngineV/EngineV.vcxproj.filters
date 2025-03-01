@@ -18,14 +18,14 @@
     <ClCompile Include="Source\Application.cpp">
       <Filter>Source\Src</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EngineV.cpp">
-      <Filter>Source\Src</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Precompiled.cpp">
       <Filter>Source\Src</Filter>
     </ClCompile>
     <ClCompile Include="Source\Renderer.cpp">
       <Filter>Source\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EngineV.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

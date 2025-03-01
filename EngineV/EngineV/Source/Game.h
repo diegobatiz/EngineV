@@ -31,8 +31,3 @@ private:
 	EngineV::Window mWindow;
 	EngineV::Renderer* mRenderer;
 };
-
-EngineV::Application* EngineV::CreateApplication()
-{
-	return new Sandbox();
-}
