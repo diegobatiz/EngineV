@@ -4,7 +4,7 @@
 
 using namespace EngineV;
 
-PhysicalDevice::PhysicalDevice(Renderer& renderer)
+PhysicalDevice::PhysicalDevice(const Renderer& renderer)
 {
 	mRenderer = &renderer;
 }
@@ -12,7 +12,7 @@ PhysicalDevice::PhysicalDevice(Renderer& renderer)
 void PhysicalDevice::Initialize()
 {
 	uint32_t deviceCount = 0;
-	VkInstance instance = *mRenderer->GetInstance();
+	VkInstance instance = mRenderer->GetInstance();
 	vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
 
 	if (deviceCount == 0)
@@ -43,7 +43,11 @@ void PhysicalDevice::Initialize()
 void EngineV::PhysicalDevice::Terminate()
 {
 	delete mQueueFamily;
+	mQueueFamily = nullptr;
 	delete mSwapchainDetails;
+	mSwapchainDetails = nullptr;
+
+	mRenderer = nullptr;
 }
 
 QueueFamilyIndices EngineV::PhysicalDevice::GetQueueFamily()
@@ -94,7 +98,7 @@ QueueFamilyIndices PhysicalDevice::FindQueueFamilies(VkPhysicalDevice device)
 		}
 
 		VkBool32 presentSupport = false;
-		VkSurfaceKHR surface = *mRenderer->GetSurface();
+		VkSurfaceKHR surface = mRenderer->GetSurface();
 		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport);
 		if (presentSupport)
 		{
@@ -133,7 +137,7 @@ bool PhysicalDevice::CheckDeviceExtensionSupport(VkPhysicalDevice device)
 SwapChainSupportDetails EngineV::PhysicalDevice::QuerySwapChainSupport(VkPhysicalDevice device)
 {
 	SwapChainSupportDetails details;
-	VkSurfaceKHR surface = *mRenderer->GetSurface();
+	VkSurfaceKHR surface = mRenderer->GetSurface();
 
 	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface, &details.capabilities);
 

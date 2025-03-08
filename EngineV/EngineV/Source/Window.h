@@ -14,8 +14,8 @@ namespace EngineV
 		void Terminate();
 		GLFWwindow* GetWindowPointer() const { return mWindow; }
 		GLFWwindow* GetWindowPointer() { return mWindow; }
-		int GetWindowHeight();
-		int GetWindowWidth();
+		int GetWindowHeight() const;
+		int GetWindowWidth() const;
 		bool GetWindowClosed();
 		void PollEvents();
 

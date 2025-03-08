@@ -30,6 +30,9 @@
     <ClCompile Include="Source\PhysicalDevice.cpp">
       <Filter>Source\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SwapChain.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -48,6 +51,9 @@
       <Filter>Source\Inc</Filter>
     </ClInclude>
     <ClInclude Include="Source\PhysicalDevice.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SwapChain.h">
       <Filter>Source\Inc</Filter>
     </ClInclude>
   </ItemGroup>

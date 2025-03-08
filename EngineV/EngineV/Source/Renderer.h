@@ -4,6 +4,7 @@ namespace EngineV
 {
 	class Window;
 	class PhysicalDevice;
+	class SwapChain;
 
 #ifdef NDEBUG
 	const bool gEnableValidationLayers = false;
@@ -48,8 +49,9 @@ namespace EngineV
 		void Initialize();
 		void Terminate();
 
-		VkInstance* GetInstance() { return &mInstance; }
-		VkSurfaceKHR* GetSurface() { return &mSurface; }
+		VkInstance GetInstance() const { return mInstance; }
+		VkSurfaceKHR GetSurface() const { return mSurface; }
+		VkDevice GetDevice() const { return mDevice; }
 
 	private:
 		void CreateInstance();
@@ -64,6 +66,7 @@ namespace EngineV
 		const char* mAppName;
 		const Window* mWindow;
 		PhysicalDevice* mPhysicalDevice = nullptr;
+		SwapChain* mSwapChain = nullptr;
 
 		VkInstance mInstance;
 		VkDebugUtilsMessengerEXT mDebugMessenger;

@@ -3,6 +3,7 @@
 
 #include "Window.h"
 #include "PhysicalDevice.h"
+#include "SwapChain.h"
 
 namespace
 {
@@ -60,11 +61,18 @@ EngineV::Renderer::Renderer(const char* appName, const Window& window)
 	mAppName = appName;
 	mWindow = &window;
 	mPhysicalDevice = new PhysicalDevice(*this);
+	mSwapChain = new SwapChain(*this, *mWindow);
 }
 
 EngineV::Renderer::~Renderer()
 {
 	delete mPhysicalDevice;
+	mPhysicalDevice = nullptr;
+
+	delete mSwapChain;
+	mSwapChain = nullptr;
+	
+	mWindow = nullptr;
 }
 
 void EngineV::Renderer::Initialize()
@@ -74,16 +82,19 @@ void EngineV::Renderer::Initialize()
 	CreateSurface();
 	mPhysicalDevice->Initialize();
 	CreateLogicalDevice();
+	mSwapChain->Initialize(mPhysicalDevice->GetQueueFamily(), mPhysicalDevice->GetSwapDetails());
 }
 
 void EngineV::Renderer::Terminate()
 {
+	mSwapChain->Terminate();
 	mPhysicalDevice->Terminate();
 	if (gEnableValidationLayers)
 	{
 		DestroyDebugUtilsMessengerEXT(mInstance, mDebugMessenger, nullptr);
 	}
 
+	vkDestroySurfaceKHR(mInstance, mSurface, nullptr);
 	vkDestroyInstance(mInstance, nullptr);
 }
 
@@ -243,7 +254,7 @@ void EngineV::Renderer::CreateLogicalDevice()
 		createInfo.enabledLayerCount = 0;
 	}
 
-	if (vkCreateDevice(*mPhysicalDevice->GetDevice(), &createInfo, nullptr, &mDevice) != VK_SUCCESS)
+	if (vkCreateDevice(mPhysicalDevice->GetDevice(), &createInfo, nullptr, &mDevice) != VK_SUCCESS)
 	{
 		throw std::runtime_error("Failed to create logical device");
 	}

@@ -37,14 +37,14 @@ void EngineV::Window::Terminate()
 	glfwTerminate();
 }
 
-int EngineV::Window::GetWindowHeight()
+int EngineV::Window::GetWindowHeight() const
 {
 	int width;
 	glfwGetFramebufferSize(mWindow, &width, nullptr);
 	return width;
 }
 
-int EngineV::Window::GetWindowWidth()
+int EngineV::Window::GetWindowWidth() const
 {
 	int height;
 	glfwGetFramebufferSize(mWindow, nullptr, &height);
@@ -59,4 +59,5 @@ bool EngineV::Window::GetWindowClosed()
 void EngineV::Window::PollEvents()
 {
 	glfwPollEvents();
+	std::this_thread::sleep_for(std::chrono::milliseconds(33));
 }

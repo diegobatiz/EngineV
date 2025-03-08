@@ -9,12 +9,12 @@ namespace EngineV
 	class PhysicalDevice
 	{
 	public:
-		PhysicalDevice(Renderer& renderer);
+		PhysicalDevice(const Renderer& renderer);
 		void Initialize();
 		void Terminate();
 		QueueFamilyIndices GetQueueFamily();
 		SwapChainSupportDetails GetSwapDetails();
-		VkPhysicalDevice* GetDevice() { return &mPhysicalDevice; }
+		VkPhysicalDevice GetDevice() const { return mPhysicalDevice; }
 
 	private:
 		bool IsDeviceSuitable(VkPhysicalDevice device);
@@ -23,9 +23,10 @@ namespace EngineV
 		SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device);
 
 	private:
-		Renderer* mRenderer;
+		const Renderer* mRenderer;
+		QueueFamilyIndices* mQueueFamily = nullptr;
+		SwapChainSupportDetails* mSwapchainDetails = nullptr;
+
 		VkPhysicalDevice mPhysicalDevice;
-		QueueFamilyIndices* mQueueFamily;
-		SwapChainSupportDetails* mSwapchainDetails;
 	};
 }
