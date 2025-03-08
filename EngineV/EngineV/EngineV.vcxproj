@@ -31,6 +31,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Game.h" />
+    <ClInclude Include="Source\ImageView.h" />
     <ClInclude Include="Source\PhysicalDevice.h" />
     <ClInclude Include="Source\Precompiled.h" />
     <ClInclude Include="Source\Renderer.h" />

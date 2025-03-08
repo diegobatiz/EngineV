@@ -16,7 +16,7 @@ SwapChain::SwapChain(const Renderer& renderer, const Window& window)
 void SwapChain::Initialize(QueueFamilyIndices indices, SwapChainSupportDetails details)
 {
 	CreateSwapchain(indices, details);
-
+	CreateImageViews();
 }
 
 void SwapChain::CreateFramebuffers(VkRenderPass renderPass)

@@ -56,5 +56,8 @@
     <ClInclude Include="Source\SwapChain.h">
       <Filter>Source\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ImageView.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
