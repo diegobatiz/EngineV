@@ -3,6 +3,7 @@
 namespace EngineV
 {
 	class Window;
+	class PhysicalDevice;
 
 #ifdef NDEBUG
 	const bool gEnableValidationLayers = false;
@@ -15,6 +16,29 @@ namespace EngineV
 		"VK_LAYER_KHRONOS_validation"
 	};
 
+	const std::vector<const char*> gDeviceExtensions =
+	{
+		VK_KHR_SWAPCHAIN_EXTENSION_NAME
+	};
+
+	struct QueueFamilyIndices
+	{
+		std::optional<uint32_t> graphicsFamily;
+		std::optional<uint32_t> presentFamily;
+
+		bool isComplete()
+		{
+			return graphicsFamily.has_value() && presentFamily.has_value();
+		}
+	};
+
+	struct SwapChainSupportDetails
+	{
+		VkSurfaceCapabilitiesKHR capabilities;
+		std::vector<VkSurfaceFormatKHR> formats;
+		std::vector<VkPresentModeKHR> presentModes;
+	};
+
 	class Renderer
 	{
 	public:
@@ -24,6 +48,9 @@ namespace EngineV
 		void Initialize();
 		void Terminate();
 
+		VkInstance* GetInstance() { return &mInstance; }
+		VkSurfaceKHR* GetSurface() { return &mSurface; }
+
 	private:
 		void CreateInstance();
 		bool CheckValidationLayerSupport();
@@ -31,13 +58,19 @@ namespace EngineV
 
 		void SetupDebugMessenger();
 		void CreateSurface();
+		void CreateLogicalDevice();
 
 	private:
 		const char* mAppName;
 		const Window* mWindow;
+		PhysicalDevice* mPhysicalDevice = nullptr;
 
 		VkInstance mInstance;
 		VkDebugUtilsMessengerEXT mDebugMessenger;
 		VkSurfaceKHR mSurface;
+		VkDevice mDevice;
+
+		VkQueue mGraphicsQueue;
+		VkQueue mPresentQueue;
 	};
 }

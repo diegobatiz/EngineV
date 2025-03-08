@@ -27,6 +27,9 @@
     <ClCompile Include="Source\EngineV.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PhysicalDevice.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -42,6 +45,9 @@
       <Filter>Source\Inc</Filter>
     </ClInclude>
     <ClInclude Include="Source\Window.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PhysicalDevice.h">
       <Filter>Source\Inc</Filter>
     </ClInclude>
   </ItemGroup>
