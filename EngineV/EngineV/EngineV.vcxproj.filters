@@ -33,6 +33,12 @@
     <ClCompile Include="Source\SwapChain.cpp">
       <Filter>Source\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\RenderPass.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DescriptorSetLayout.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -57,6 +63,12 @@
       <Filter>Source\Inc</Filter>
     </ClInclude>
     <ClInclude Include="Source\ImageView.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RenderPass.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DescriptorSetLayout.h">
       <Filter>Source\Inc</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,6 +5,8 @@ namespace EngineV
 	class Window;
 	class PhysicalDevice;
 	class SwapChain;
+	class RenderPass;
+	class DescriptorSetLayout;
 
 #ifdef NDEBUG
 	const bool gEnableValidationLayers = false;
@@ -67,6 +69,8 @@ namespace EngineV
 		const Window* mWindow;
 		PhysicalDevice* mPhysicalDevice = nullptr;
 		SwapChain* mSwapChain = nullptr;
+		RenderPass* mRenderPass = nullptr;
+		DescriptorSetLayout* mLayout = nullptr;
 
 		VkInstance mInstance;
 		VkDebugUtilsMessengerEXT mDebugMessenger;

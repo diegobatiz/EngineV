@@ -14,6 +14,7 @@ namespace EngineV
 		void Initialize(QueueFamilyIndices indices, SwapChainSupportDetails details);
 		void CreateFramebuffers(VkRenderPass renderPass);
 		void Terminate();
+		const VkFormat GetSwapFormat() const { return mSwapChainImageFormat; }
 
 	private:
 		void CreateSwapchain(QueueFamilyIndices indices, SwapChainSupportDetails details);

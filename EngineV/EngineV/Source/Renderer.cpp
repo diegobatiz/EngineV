@@ -4,6 +4,8 @@
 #include "Window.h"
 #include "PhysicalDevice.h"
 #include "SwapChain.h"
+#include "RenderPass.h"
+#include "DescriptorSetLayout.h"
 
 namespace
 {
@@ -62,15 +64,23 @@ EngineV::Renderer::Renderer(const char* appName, const Window& window)
 	mWindow = &window;
 	mPhysicalDevice = new PhysicalDevice(*this);
 	mSwapChain = new SwapChain(*this, *mWindow);
+	mRenderPass = new RenderPass(*this);
+	mLayout = new DescriptorSetLayout(*this);
 }
 
 EngineV::Renderer::~Renderer()
 {
-	delete mPhysicalDevice;
-	mPhysicalDevice = nullptr;
+	delete mLayout;
+	mLayout = nullptr;
+
+	delete mRenderPass;
+	mRenderPass = nullptr;
 
 	delete mSwapChain;
 	mSwapChain = nullptr;
+
+	delete mPhysicalDevice;
+	mPhysicalDevice = nullptr;
 	
 	mWindow = nullptr;
 }
@@ -83,11 +93,15 @@ void EngineV::Renderer::Initialize()
 	mPhysicalDevice->Initialize();
 	CreateLogicalDevice();
 	mSwapChain->Initialize(mPhysicalDevice->GetQueueFamily(), mPhysicalDevice->GetSwapDetails());
+	mRenderPass->Initalize(mSwapChain->GetSwapFormat());
+	mLayout->Initalize(1, 1);
 }
 
 void EngineV::Renderer::Terminate()
 {
 	mSwapChain->Terminate();
+	mLayout->Terminate();
+	mRenderPass->Terminate();
 	mPhysicalDevice->Terminate();
 	if (gEnableValidationLayers)
 	{
