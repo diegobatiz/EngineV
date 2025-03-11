@@ -10,6 +10,7 @@ namespace EngineV
 		DescriptorSetLayout(const Renderer& renderer);
 		void Initalize(int bufferCount, int samplerCount);
 		void Terminate();
+		VkDescriptorSetLayout GetLayout() const { return mLayout; }
 
 	private:
 		const Renderer* mRenderer = nullptr;

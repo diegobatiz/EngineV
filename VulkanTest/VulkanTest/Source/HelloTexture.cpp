@@ -101,6 +101,7 @@ void HelloTextureApplication::initVulkan()
 	createRenderPass();
 	createDescriptorSetLayout();
 	createGraphicsPipeline();
+
 	createCommandPool();
 	createDepthResources();
 	createFrameBuffers();

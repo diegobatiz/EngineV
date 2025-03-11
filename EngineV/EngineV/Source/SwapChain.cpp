@@ -25,21 +25,19 @@ void SwapChain::CreateFramebuffers(VkRenderPass renderPass)
 
 	for (size_t i = 0; i < mSwapChainImageViews.size(); ++i)
 	{
-		/*std::array<VkImageView, 1> attachments =
+		std::array<VkImageView, 2> attachments =
 		{
-			mSwapChainImageViews[i]
-			//mDepthImageView
-		};*/
+			mSwapChainImageViews[i],
+			mDepthImageView
+		};
 
 		VkImageView attachments[] = { mSwapChainImageViews[i] };
 
 		VkFramebufferCreateInfo framebufferInfo{};
 		framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
 		framebufferInfo.renderPass = renderPass;
-		//framebufferInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
-		framebufferInfo.attachmentCount = 1;
-		//framebufferInfo.pAttachments = attachments.data();
-		framebufferInfo.pAttachments = attachments;
+		framebufferInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
+		framebufferInfo.pAttachments = attachments.data();
 		framebufferInfo.width = mSwapChainExtent.width;
 		framebufferInfo.height = mSwapChainExtent.height;
 		framebufferInfo.layers = 1;
@@ -54,7 +52,7 @@ void SwapChain::CreateFramebuffers(VkRenderPass renderPass)
 void SwapChain::Terminate()
 {
 	VkDevice device = mRenderer->GetDevice();
-	//vkDestroyImageView(device, mDepthImageView, nullptr);
+	vkDestroyImageView(device, mDepthImageView, nullptr);
 	//vkDestroyImage(device, mDepthImage, nullptr);
 	//vkFreeMemory(device, mDepthImageMemory, nullptr);
 

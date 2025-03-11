@@ -28,5 +28,7 @@ namespace EngineV
 		SwapChainSupportDetails* mSwapchainDetails = nullptr;
 
 		VkPhysicalDevice mPhysicalDevice;
+
+		VkFormat mDepthFormat;
 	};
 }

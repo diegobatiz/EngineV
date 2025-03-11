@@ -7,6 +7,7 @@ namespace EngineV
 	class SwapChain;
 	class RenderPass;
 	class DescriptorSetLayout;
+	class GraphicsPipeline;
 
 #ifdef NDEBUG
 	const bool gEnableValidationLayers = false;
@@ -71,6 +72,7 @@ namespace EngineV
 		SwapChain* mSwapChain = nullptr;
 		RenderPass* mRenderPass = nullptr;
 		DescriptorSetLayout* mLayout = nullptr;
+		GraphicsPipeline* mGraphicsPipeline = nullptr;
 
 		VkInstance mInstance;
 		VkDebugUtilsMessengerEXT mDebugMessenger;

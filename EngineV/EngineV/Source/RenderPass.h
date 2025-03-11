@@ -8,8 +8,9 @@ namespace EngineV
 	{
 	public:
 		RenderPass(const Renderer& renderer);
-		void Initalize(VkFormat swapChainFormat);
+		void Initalize(VkFormat swapChainFormat, VkFormat depthFormat = VK_FORMAT_UNDEFINED);
 		void Terminate();
+		VkRenderPass GetRenderPass() const { return mRenderPass; }
 
 	private:
 		const Renderer* mRenderer = nullptr;

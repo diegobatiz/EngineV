@@ -6,6 +6,8 @@
 #include "SwapChain.h"
 #include "RenderPass.h"
 #include "DescriptorSetLayout.h"
+#include "GraphicsPipeline.h"
+#include "VertexTypes.h"
 
 namespace
 {
@@ -66,10 +68,14 @@ EngineV::Renderer::Renderer(const char* appName, const Window& window)
 	mSwapChain = new SwapChain(*this, *mWindow);
 	mRenderPass = new RenderPass(*this);
 	mLayout = new DescriptorSetLayout(*this);
+	mGraphicsPipeline = new GraphicsPipeline(*this);
 }
 
 EngineV::Renderer::~Renderer()
 {
+	delete mGraphicsPipeline;
+	mGraphicsPipeline = nullptr;
+
 	delete mLayout;
 	mLayout = nullptr;
 
@@ -95,6 +101,8 @@ void EngineV::Renderer::Initialize()
 	mSwapChain->Initialize(mPhysicalDevice->GetQueueFamily(), mPhysicalDevice->GetSwapDetails());
 	mRenderPass->Initalize(mSwapChain->GetSwapFormat());
 	mLayout->Initalize(1, 1);
+	VertexPCT vertex;
+	mGraphicsPipeline->Initialize(vertex, mSwapChain->GetExtent(), mLayout->GetLayout(), mRenderPass->GetRenderPass());
 }
 
 void EngineV::Renderer::Terminate()

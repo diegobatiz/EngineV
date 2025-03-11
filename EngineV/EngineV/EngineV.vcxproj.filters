@@ -39,6 +39,9 @@
     <ClCompile Include="Source\DescriptorSetLayout.cpp">
       <Filter>Source\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GraphicsPipeline.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -69,6 +72,12 @@
       <Filter>Source\Inc</Filter>
     </ClInclude>
     <ClInclude Include="Source\DescriptorSetLayout.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\VertexTypes.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GraphicsPipeline.h">
       <Filter>Source\Inc</Filter>
     </ClInclude>
   </ItemGroup>

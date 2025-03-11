@@ -15,6 +15,7 @@ namespace EngineV
 		void CreateFramebuffers(VkRenderPass renderPass);
 		void Terminate();
 		const VkFormat GetSwapFormat() const { return mSwapChainImageFormat; }
+		VkExtent2D GetExtent() const { return mSwapChainExtent; }
 
 	private:
 		void CreateSwapchain(QueueFamilyIndices indices, SwapChainSupportDetails details);
@@ -35,5 +36,6 @@ namespace EngineV
 		VkFormat mSwapChainImageFormat;
 		VkExtent2D mSwapChainExtent;
 		std::vector<VkImageView> mSwapChainImageViews;
+		VkImageView mDepthImageView;
 	};
 }
