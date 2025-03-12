@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\CommandPool.cpp" />
     <ClCompile Include="Source\DescriptorSetLayout.cpp" />
     <ClCompile Include="Source\EngineV.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -29,19 +30,23 @@
     </ClCompile>
     <ClCompile Include="Source\RenderPass.cpp" />
     <ClCompile Include="Source\SwapChain.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\BufferCreation.h" />
+    <ClInclude Include="Source\CommandPool.h" />
     <ClInclude Include="Source\DescriptorSetLayout.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GraphicsPipeline.h" />
-    <ClInclude Include="Source\ImageView.h" />
+    <ClInclude Include="Source\ImageCreation.h" />
     <ClInclude Include="Source\PhysicalDevice.h" />
     <ClInclude Include="Source\Precompiled.h" />
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\RenderPass.h" />
     <ClInclude Include="Source\SwapChain.h" />
+    <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\VertexTypes.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>

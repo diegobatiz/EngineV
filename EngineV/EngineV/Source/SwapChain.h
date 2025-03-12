@@ -4,6 +4,7 @@ namespace EngineV
 {
 	class Renderer;
 	class Window;
+	class CommandPool;
 	struct QueueFamilyIndices;
 	struct SwapChainSupportDetails;
 
@@ -13,6 +14,7 @@ namespace EngineV
 		SwapChain(const Renderer& renderer, const Window& window);
 		void Initialize(QueueFamilyIndices indices, SwapChainSupportDetails details);
 		void CreateFramebuffers(VkRenderPass renderPass);
+		void CreateDepthResources(VkFormat depthFormat, const CommandPool& commandPool);
 		void Terminate();
 		const VkFormat GetSwapFormat() const { return mSwapChainImageFormat; }
 		VkExtent2D GetExtent() const { return mSwapChainExtent; }
@@ -36,6 +38,9 @@ namespace EngineV
 		VkFormat mSwapChainImageFormat;
 		VkExtent2D mSwapChainExtent;
 		std::vector<VkImageView> mSwapChainImageViews;
+
+		VkImage mDepthImage;
+		VkDeviceMemory mDepthImageMemory;
 		VkImageView mDepthImageView;
 	};
 }

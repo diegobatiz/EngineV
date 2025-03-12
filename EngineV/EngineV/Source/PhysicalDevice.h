@@ -15,6 +15,7 @@ namespace EngineV
 		QueueFamilyIndices GetQueueFamily();
 		SwapChainSupportDetails GetSwapDetails();
 		VkPhysicalDevice GetDevice() const { return mPhysicalDevice; }
+		VkFormat GetDepthFormat() const { return mDepthFormat; }
 
 	private:
 		bool IsDeviceSuitable(VkPhysicalDevice device);

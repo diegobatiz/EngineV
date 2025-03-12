@@ -1,6 +1,7 @@
 #include "HelloTexture.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include<stb_image.h>
+#include <thread>
 
 namespace
 {
@@ -101,13 +102,13 @@ void HelloTextureApplication::initVulkan()
 	createRenderPass();
 	createDescriptorSetLayout();
 	createGraphicsPipeline();
-
 	createCommandPool();
 	createDepthResources();
 	createFrameBuffers();
 	createTextureImage();
 	createTextureImageView();
 	createTextureSampler();
+
 	createVertexBuffer();
 	createIndexBuffer();
 	createUniformBuffers();
@@ -1472,6 +1473,7 @@ void HelloTextureApplication::mainLoop()
 	while (!glfwWindowShouldClose(mWindow))
 	{
 		glfwPollEvents();
+		std::this_thread::sleep_for(std::chrono::milliseconds(33));
 		drawFrame();
 	}
 }

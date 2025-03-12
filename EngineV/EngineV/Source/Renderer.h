@@ -8,6 +8,8 @@ namespace EngineV
 	class RenderPass;
 	class DescriptorSetLayout;
 	class GraphicsPipeline;
+	class CommandPool;
+	class Texture;
 
 #ifdef NDEBUG
 	const bool gEnableValidationLayers = false;
@@ -55,6 +57,8 @@ namespace EngineV
 		VkInstance GetInstance() const { return mInstance; }
 		VkSurfaceKHR GetSurface() const { return mSurface; }
 		VkDevice GetDevice() const { return mDevice; }
+		VkQueue GetGraphicsQueue() const { return mGraphicsQueue; }
+		VkPhysicalDevice GetPhysicalDevice() const;
 
 	private:
 		void CreateInstance();
@@ -73,6 +77,8 @@ namespace EngineV
 		RenderPass* mRenderPass = nullptr;
 		DescriptorSetLayout* mLayout = nullptr;
 		GraphicsPipeline* mGraphicsPipeline = nullptr;
+		CommandPool* mCommandPool = nullptr;
+		Texture* mLandscapeTexture = nullptr;
 
 		VkInstance mInstance;
 		VkDebugUtilsMessengerEXT mDebugMessenger;

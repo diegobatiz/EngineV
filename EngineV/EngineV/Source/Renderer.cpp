@@ -8,6 +8,8 @@
 #include "DescriptorSetLayout.h"
 #include "GraphicsPipeline.h"
 #include "VertexTypes.h"
+#include "CommandPool.h"
+#include "Texture.h"
 
 namespace
 {
@@ -69,10 +71,18 @@ EngineV::Renderer::Renderer(const char* appName, const Window& window)
 	mRenderPass = new RenderPass(*this);
 	mLayout = new DescriptorSetLayout(*this);
 	mGraphicsPipeline = new GraphicsPipeline(*this);
+	mCommandPool = new CommandPool(*this);
+	mLandscapeTexture = new Texture(*this);
 }
 
 EngineV::Renderer::~Renderer()
 {
+	delete mLandscapeTexture;
+	mLandscapeTexture = nullptr;
+
+	delete mCommandPool;
+	mCommandPool = nullptr;
+
 	delete mGraphicsPipeline;
 	mGraphicsPipeline = nullptr;
 
@@ -103,14 +113,22 @@ void EngineV::Renderer::Initialize()
 	mLayout->Initalize(1, 1);
 	VertexPCT vertex;
 	mGraphicsPipeline->Initialize(vertex, mSwapChain->GetExtent(), mLayout->GetLayout(), mRenderPass->GetRenderPass());
+	mCommandPool->Initalize(mPhysicalDevice->GetQueueFamily());
+	mSwapChain->CreateDepthResources(mPhysicalDevice->GetDepthFormat(), *mCommandPool);
+	mSwapChain->CreateFramebuffers(mRenderPass->GetRenderPass());
+	mLandscapeTexture->Initalize();
 }
 
 void EngineV::Renderer::Terminate()
 {
 	mSwapChain->Terminate();
+	mLandscapeTexture->Terminate();
 	mLayout->Terminate();
 	mRenderPass->Terminate();
 	mPhysicalDevice->Terminate();
+	mCommandPool->Terminate();
+
+	vkDestroyDevice(mDevice, nullptr);
 	if (gEnableValidationLayers)
 	{
 		DestroyDebugUtilsMessengerEXT(mInstance, mDebugMessenger, nullptr);
@@ -118,6 +136,11 @@ void EngineV::Renderer::Terminate()
 
 	vkDestroySurfaceKHR(mInstance, mSurface, nullptr);
 	vkDestroyInstance(mInstance, nullptr);
+}
+
+VkPhysicalDevice EngineV::Renderer::GetPhysicalDevice() const
+{
+	return mPhysicalDevice->GetDevice();
 }
 
 void EngineV::Renderer::CreateInstance()

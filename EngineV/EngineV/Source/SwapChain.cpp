@@ -3,7 +3,8 @@
 
 #include "Renderer.h"
 #include "Window.h"
-#include "ImageView.h"
+#include "ImageCreation.h"
+#include "CommandPool.h"
 
 using namespace EngineV;
 
@@ -47,6 +48,15 @@ void SwapChain::CreateFramebuffers(VkRenderPass renderPass)
 			throw std::runtime_error("Failed to create frame buffer");
 		}
 	}
+}
+
+void SwapChain::CreateDepthResources(VkFormat depthFormat, const CommandPool& commandPool)
+{
+	CreateImage(*mRenderer, mSwapChainExtent.width, mSwapChainExtent.height, depthFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, mDepthImage, mDepthImageMemory);
+	mDepthImageView = CreateImageView(mRenderer->GetDevice(), mDepthImage, depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT);
+
+	TransitionImageLayout(commandPool, mDepthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
 }
 
 void SwapChain::Terminate()

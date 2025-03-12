@@ -42,6 +42,9 @@
     <ClCompile Include="Source\GraphicsPipeline.cpp">
       <Filter>Source\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\CommandPool.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -65,7 +68,7 @@
     <ClInclude Include="Source\SwapChain.h">
       <Filter>Source\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ImageView.h">
+    <ClInclude Include="Source\ImageCreation.h">
       <Filter>Source\Inc</Filter>
     </ClInclude>
     <ClInclude Include="Source\RenderPass.h">
@@ -78,6 +81,9 @@
       <Filter>Source\Inc</Filter>
     </ClInclude>
     <ClInclude Include="Source\GraphicsPipeline.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CommandPool.h">
       <Filter>Source\Inc</Filter>
     </ClInclude>
   </ItemGroup>
