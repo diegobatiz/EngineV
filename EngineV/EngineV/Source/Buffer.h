@@ -10,7 +10,7 @@ namespace EngineV
 	public:
 		Buffer() = default;
 		virtual void Initalize(const Renderer& renderer, const CommandPool& commandPool, VkBufferUsageFlags usage, const void* data, VkDeviceSize size);
-		void Terminate();
+		virtual void Terminate();
 
 	protected:
 		const Renderer* mRenderer = nullptr;
@@ -27,5 +27,15 @@ namespace EngineV
 			VkDeviceSize size = sizeof(data[0])* data.size();
 			TypedBuffer::Initalize(renderer, commandPool, usage, data.data(), size);
 		}
+	};
+	
+	template<class DataType>
+	class UniformBuffer : public Buffer
+	{
+	public:
+		void Initialize(const Renderer& renderer, VkBufferUsageFlags usage);
+	
+	private:
+		void* mBufferMapped;
 	};
 }
