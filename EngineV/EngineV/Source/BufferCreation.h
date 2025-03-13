@@ -89,4 +89,17 @@ namespace EngineV
 
 		commandPool.EndSingleTimeCommands(commandBuffer);
 	}
+
+	void CopyBuffer(const CommandPool& commandPool, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size)
+	{
+		VkCommandBuffer commandBuffer = commandPool.BeginSingleTimeCommands();
+
+		VkBufferCopy copyRegion{};
+		copyRegion.srcOffset = 0;
+		copyRegion.dstOffset = 0;
+		copyRegion.size = size;
+		vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
+
+		commandPool.EndSingleTimeCommands(commandBuffer);
+	}
 }

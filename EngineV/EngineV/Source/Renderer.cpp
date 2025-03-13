@@ -7,9 +7,9 @@
 #include "RenderPass.h"
 #include "DescriptorSetLayout.h"
 #include "GraphicsPipeline.h"
-#include "VertexTypes.h"
 #include "CommandPool.h"
 #include "Texture.h"
+#include "Buffer.h"
 
 namespace
 {
@@ -73,10 +73,17 @@ EngineV::Renderer::Renderer(const char* appName, const Window& window)
 	mGraphicsPipeline = new GraphicsPipeline(*this);
 	mCommandPool = new CommandPool(*this);
 	mLandscapeTexture = new Texture(*this);
+	mVertexBuffer = new Buffer(*this);
+	mIndexBuffer = new Buffer(*this);
 }
 
 EngineV::Renderer::~Renderer()
 {
+	delete mVertexBuffer;
+	mVertexBuffer = nullptr;
+	delete mIndexBuffer;
+	mIndexBuffer = nullptr;
+
 	delete mLandscapeTexture;
 	mLandscapeTexture = nullptr;
 
@@ -116,11 +123,15 @@ void EngineV::Renderer::Initialize()
 	mCommandPool->Initalize(mPhysicalDevice->GetQueueFamily());
 	mSwapChain->CreateDepthResources(mPhysicalDevice->GetDepthFormat(), *mCommandPool);
 	mSwapChain->CreateFramebuffers(mRenderPass->GetRenderPass());
-	mLandscapeTexture->Initalize();
+	mLandscapeTexture->Initalize(*mCommandPool);
+	mVertexBuffer->Initialize<VertexPCT>(*mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, vertices);
+	mIndexBuffer->Initialize<uint16_t>(*mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indices);
 }
 
 void EngineV::Renderer::Terminate()
 {
+	mIndexBuffer->Terminate();
+	mVertexBuffer->Terminate();
 	mSwapChain->Terminate();
 	mLandscapeTexture->Terminate();
 	mLayout->Terminate();
