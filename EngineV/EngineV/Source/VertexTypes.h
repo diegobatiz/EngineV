@@ -6,12 +6,18 @@ namespace EngineV
 {
 	struct Vertex
 	{
+		Vertex() = default;
 		virtual VkVertexInputBindingDescription GetBindingDescription() const = 0;
 		virtual std::array<VkVertexInputAttributeDescription, 3> GetAttributeDescriptions() const = 0;
 	};
 
 	struct VertexPCT : public Vertex
 	{
+		VertexPCT(glm::vec3 p, glm::vec3 c, glm::vec2 t)
+			: pos(p)
+			, color(c)
+			, texCoord(t)
+		{}
 		glm::vec3 pos;
 		glm::vec3 color;
 		glm::vec2 texCoord;

@@ -6,13 +6,9 @@
 
 using namespace EngineV;
 
-Buffer::Buffer(const Renderer& renderer)
+void Buffer::Initalize(const Renderer& renderer, const CommandPool& commandPool, VkBufferUsageFlags usage, const void* vectorData, VkDeviceSize size)
 {
 	mRenderer = &renderer;
-}
-
-void Buffer::Initalize(const CommandPool& commandPool, VkBufferUsageFlags usage, const void* vectorData, VkDeviceSize size)
-{
 	VkBuffer stagingBuffer;
 	VkDeviceMemory stagingBufferMemory;
 	CreateBuffer(*mRenderer, size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory);

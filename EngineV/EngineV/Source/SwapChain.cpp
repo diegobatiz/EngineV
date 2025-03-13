@@ -32,8 +32,6 @@ void SwapChain::CreateFramebuffers(VkRenderPass renderPass)
 			mDepthImageView
 		};
 
-		VkImageView attachments[] = { mSwapChainImageViews[i] };
-
 		VkFramebufferCreateInfo framebufferInfo{};
 		framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
 		framebufferInfo.renderPass = renderPass;
@@ -63,8 +61,8 @@ void SwapChain::Terminate()
 {
 	VkDevice device = mRenderer->GetDevice();
 	vkDestroyImageView(device, mDepthImageView, nullptr);
-	//vkDestroyImage(device, mDepthImage, nullptr);
-	//vkFreeMemory(device, mDepthImageMemory, nullptr);
+	vkDestroyImage(device, mDepthImage, nullptr);
+	vkFreeMemory(device, mDepthImageMemory, nullptr);
 
 	for (size_t i = 0; i < mSwapChainFramebuffers.size(); ++i)
 	{

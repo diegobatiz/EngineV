@@ -72,14 +72,14 @@ void GraphicsPipeline::Initialize(const Vertex& vertex, VkExtent2D swapChainExte
 	VkViewport viewport{};
 	viewport.x = 0.0f;
 	viewport.y = 0.0f;
-	viewport.width = extent.width;
-	viewport.height = extent.height;
+	viewport.width = (float)swapChainExtent.width;
+	viewport.height = (float)swapChainExtent.height;
 	viewport.minDepth = 0.0f;
 	viewport.maxDepth = 1.0f;
 
 	VkRect2D scissor{};
 	scissor.offset = { 0, 0 };
-	scissor.extent = extent;
+	scissor.extent = swapChainExtent;
 
 	std::vector<VkDynamicState> dynamicStates =
 	{

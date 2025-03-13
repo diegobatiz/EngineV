@@ -1,8 +1,9 @@
 #include "Precompiled.h"
 #include "Texture.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include<stb_image.h>
 
 #include "Renderer.h"
-#include <stb_image.h>
 #include "ImageCreation.h"
 #include "BufferCreation.h"
 

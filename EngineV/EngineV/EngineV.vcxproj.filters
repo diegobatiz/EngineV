@@ -45,6 +45,18 @@
     <ClCompile Include="Source\CommandPool.cpp">
       <Filter>Source\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Texture.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Buffer.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ImageCreation.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BufferCreation.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -84,6 +96,15 @@
       <Filter>Source\Inc</Filter>
     </ClInclude>
     <ClInclude Include="Source\CommandPool.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Texture.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BufferCreation.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Buffer.h">
       <Filter>Source\Inc</Filter>
     </ClInclude>
   </ItemGroup>

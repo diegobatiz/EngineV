@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Buffer.cpp" />
+    <ClCompile Include="Source\BufferCreation.cpp" />
     <ClCompile Include="Source\CommandPool.cpp" />
     <ClCompile Include="Source\DescriptorSetLayout.cpp" />
     <ClCompile Include="Source\EngineV.cpp">
@@ -19,6 +21,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\GraphicsPipeline.cpp" />
+    <ClCompile Include="Source\ImageCreation.cpp" />
     <ClCompile Include="Source\PhysicalDevice.cpp" />
     <ClCompile Include="Source\Precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -35,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Buffer.h" />
     <ClInclude Include="Source\BufferCreation.h" />
     <ClInclude Include="Source\CommandPool.h" />
     <ClInclude Include="Source\DescriptorSetLayout.h" />

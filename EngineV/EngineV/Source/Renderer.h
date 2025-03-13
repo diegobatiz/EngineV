@@ -1,5 +1,6 @@
 #pragma once
 #include "VertexTypes.h"
+#include "Buffer.h"
 
 namespace EngineV
 {
@@ -11,7 +12,6 @@ namespace EngineV
 	class GraphicsPipeline;
 	class CommandPool;
 	class Texture;
-	class Buffer;
 
 #ifdef NDEBUG
 	const bool gEnableValidationLayers = false;
@@ -34,7 +34,7 @@ namespace EngineV
 		std::optional<uint32_t> graphicsFamily;
 		std::optional<uint32_t> presentFamily;
 
-		bool isComplete()
+		bool isComplete() const
 		{
 			return graphicsFamily.has_value() && presentFamily.has_value();
 		}
@@ -49,20 +49,15 @@ namespace EngineV
 
 	const std::vector<VertexPCT> vertices =
 	{
-		{{-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
-		{{ 0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-		{{ 0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
-		{{-0.5f,  0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
-		{{-0.5f, -0.5f, -1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
-		{{ 0.5f, -0.5f, -1.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-		{{ 0.5f,  0.5f, -1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
-		{{-0.5f,  0.5f, -1.0f}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}}
+		{ {-0.5, -0.5, 0.0}, {1.0, 1.0, 1.0}, {1.0, 0.0} },
+		{ { 0.5, -0.5, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0} },
+		{ { 0.5,  0.5, 0.0}, {0.0, 0.0, 1.0}, {0.0, 1.0} },
+		{ {-0.5,  0.5, 0.0}, {1.0, 0.0, 0.0}, {1.0, 1.0} }
 	};
 
 	const std::vector<uint16_t> indices =
 	{
-		0, 1, 2, 2, 3, 0,
-		4, 5, 6, 6, 7, 4
+		0, 1, 2, 2, 3, 0
 	};
 
 	class Renderer
@@ -99,8 +94,8 @@ namespace EngineV
 		GraphicsPipeline* mGraphicsPipeline = nullptr;
 		CommandPool* mCommandPool = nullptr;
 		Texture* mLandscapeTexture = nullptr;
-		Buffer* mVertexBuffer = nullptr;
-		Buffer* mIndexBuffer = nullptr;
+		TypedBuffer<VertexPCT>* mVertexBuffer = nullptr;
+		TypedBuffer<uint16_t>* mIndexBuffer = nullptr;
 
 		VkInstance mInstance;
 		VkDebugUtilsMessengerEXT mDebugMessenger;
