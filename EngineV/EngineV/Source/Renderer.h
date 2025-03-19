@@ -19,6 +19,8 @@ namespace EngineV
 	const bool gEnableValidationLayers = true;
 #endif
 
+#define MAX_FRAMES_IN_FLIGHT 2;
+
 	const std::vector<const char*> gValidationLayers =
 	{
 		"VK_LAYER_KHRONOS_validation"
@@ -60,6 +62,14 @@ namespace EngineV
 		0, 1, 2, 2, 3, 0
 	};
 
+	struct WorldView
+	{
+		WorldView() = default;
+		glm::mat4 model;
+		glm::mat4 view;
+		glm::mat4 proj;
+	};
+
 	class Renderer
 	{
 	public:
@@ -96,6 +106,7 @@ namespace EngineV
 		Texture* mLandscapeTexture = nullptr;
 		TypedBuffer<VertexPCT>* mVertexBuffer = nullptr;
 		TypedBuffer<uint16_t>* mIndexBuffer = nullptr;
+		std::vector<UniformBuffer<WorldView>*> mUniformBuffers;
 
 		VkInstance mInstance;
 		VkDebugUtilsMessengerEXT mDebugMessenger;

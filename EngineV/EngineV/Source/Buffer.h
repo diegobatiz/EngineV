@@ -30,10 +30,19 @@ namespace EngineV
 	};
 	
 	template<class DataType>
-	class UniformBuffer : public Buffer
+	class UniformBuffer final : public Buffer
 	{
 	public:
-		void Initialize(const Renderer& renderer, VkBufferUsageFlags usage);
+		void Initialize(const Renderer& renderer, VkBufferUsageFlags usage)
+		{
+			mRenderer = &renderer;
+			VkDeviceSize bufferSize = sizeof(DataType);
+
+			CreateBuffer(*mRenderer, bufferSize, usage, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, mBuffer, mBuffer);
+
+			VkDevice device = mRenderer->GetDevice();
+			vkMapMemory(device, mBufferMemory, 0, bufferSize, 0, &mBuffersMapped);
+		}
 	
 	private:
 		void* mBufferMapped;

@@ -74,10 +74,21 @@ EngineV::Renderer::Renderer(const char* appName, const Window& window)
 	mLandscapeTexture = new Texture(*this);
 	mVertexBuffer = new TypedBuffer<VertexPCT>();
 	mIndexBuffer = new TypedBuffer<uint16_t>();
+
+	for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; ++i)
+	{
+		mUniformBuffers.push_back(new UniformBuffer<WorldView>());
+	}
 }
 
 EngineV::Renderer::~Renderer()
 {
+	for (auto buffer : mUniformBuffers)
+	{
+		delete buffer;
+		buffer = nullptr;
+	}
+
 	delete mVertexBuffer;
 	mVertexBuffer = nullptr;
 	delete mIndexBuffer;
@@ -125,10 +136,18 @@ void EngineV::Renderer::Initialize()
 	mLandscapeTexture->Initalize(*mCommandPool);
 	mVertexBuffer->Initialize(*this, *mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, vertices);
 	mIndexBuffer->Initialize(*this, *mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indices);
+	for (auto buffer : mUniformBuffers)
+	{
+		buffer->Initialize(*this, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
+	}
 }
 
 void EngineV::Renderer::Terminate()
 {
+	for (auto buffer : mUniformBuffers)
+	{
+		buffer->Terminate();
+	}
 	mIndexBuffer->Terminate();
 	mVertexBuffer->Terminate();
 	mSwapChain->Terminate();
