@@ -1,5 +1,6 @@
 #pragma once
 #include "CommandPool.h"
+#include "BufferCreation.h"
 
 namespace EngineV
 {
@@ -38,10 +39,10 @@ namespace EngineV
 			mRenderer = &renderer;
 			VkDeviceSize bufferSize = sizeof(DataType);
 
-			CreateBuffer(*mRenderer, bufferSize, usage, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, mBuffer, mBuffer);
+			CreateBuffer(*mRenderer, bufferSize, usage, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, mBuffer, mBufferMemory);
 
 			VkDevice device = mRenderer->GetDevice();
-			vkMapMemory(device, mBufferMemory, 0, bufferSize, 0, &mBuffersMapped);
+			vkMapMemory(device, mBufferMemory, 0, bufferSize, 0, &mBufferMapped);
 		}
 	
 	private:

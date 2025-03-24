@@ -19,7 +19,7 @@ namespace EngineV
 	const bool gEnableValidationLayers = true;
 #endif
 
-#define MAX_FRAMES_IN_FLIGHT 2;
+#define MAX_FRAMES_IN_FLIGHT 2
 
 	const std::vector<const char*> gValidationLayers =
 	{
