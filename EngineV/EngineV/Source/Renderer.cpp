@@ -147,18 +147,28 @@ void EngineV::Renderer::Initialize()
 
 void EngineV::Renderer::Terminate()
 {
+	mSwapChain->Terminate();
+	mLandscapeTexture->Terminate();
 	for (auto buffer : mUniformBuffers)
 	{
 		buffer.Terminate();
 	}
+	mDescriptorPool->Terminate();
+	mLayout->Terminate();
 	mIndexBuffer->Terminate();
 	mVertexBuffer->Terminate();
-	mSwapChain->Terminate();
-	mLandscapeTexture->Terminate();
-	mLayout->Terminate();
+	mGraphicsPipeline->Terminate();
 	mRenderPass->Terminate();
-	mPhysicalDevice->Terminate();
+
+	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; ++i)
+	{
+		vkDestroySemaphore(mDevice, mImageAvailableSemaphores[i], nullptr);
+		vkDestroySemaphore(mDevice, mRenderFinishedSemaphores[i], nullptr);
+		vkDestroyFence(mDevice, mInFlightFences[i], nullptr);
+	}
 	mCommandPool->Terminate();
+
+	mPhysicalDevice->Terminate();
 
 	vkDestroyDevice(mDevice, nullptr);
 	if (gEnableValidationLayers)
