@@ -24,6 +24,22 @@ void CommandPool::Initalize(QueueFamilyIndices indices)
 	}
 }
 
+void CommandPool::CreateCommandBuffers()
+{
+	mCommandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
+	VkCommandBufferAllocateInfo allocateInfo{};
+	allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	allocateInfo.commandPool = mCommandPool;
+	allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	allocateInfo.commandBufferCount = (uint32_t)mCommandBuffers.size();
+
+	VkDevice device = mRenderer->GetDevice();
+	if (vkAllocateCommandBuffers(device, &allocateInfo, mCommandBuffers.data()) != VK_SUCCESS)
+	{
+		throw std::runtime_error("Failed to allocate command buffers");
+	}
+}
+
 void CommandPool::Terminate()
 {
 	VkDevice device = mRenderer->GetDevice();

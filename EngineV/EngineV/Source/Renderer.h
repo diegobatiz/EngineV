@@ -94,6 +94,7 @@ namespace EngineV
 		void SetupDebugMessenger();
 		void CreateSurface();
 		void CreateLogicalDevice();
+		void CreateSyncObjects();
 
 	private:
 		const char* mAppName;
@@ -117,5 +118,9 @@ namespace EngineV
 
 		VkQueue mGraphicsQueue;
 		VkQueue mPresentQueue;
+
+		std::vector<VkSemaphore> mImageAvailableSemaphores;
+		std::vector<VkSemaphore> mRenderFinishedSemaphores;
+		std::vector<VkFence> mInFlightFences;
 	};
 }

@@ -142,6 +142,7 @@ void EngineV::Renderer::Initialize()
 	}
 	mDescriptorPool->Initalize(static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT));
 	mDescriptorPool->InitializeDescriptorSets(mLayout->GetLayout(), mUniformBuffers, mLandscapeTexture->GetImageView(), mLandscapeTexture->GetSampler());
+	mCommandPool->CreateCommandBuffers();
 }
 
 void EngineV::Renderer::Terminate()
@@ -337,4 +338,28 @@ void EngineV::Renderer::CreateLogicalDevice()
 
 	vkGetDeviceQueue(mDevice, indices.graphicsFamily.value(), 0, &mGraphicsQueue);
 	vkGetDeviceQueue(mDevice, indices.presentFamily.value(), 0, &mPresentQueue);
+}
+
+void EngineV::Renderer::CreateSyncObjects()
+{
+	mImageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
+	mRenderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
+	mInFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
+
+	VkSemaphoreCreateInfo semaphoreInfo{};
+	semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+
+	VkFenceCreateInfo fenceInfo{};
+	fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+	fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; ++i)
+	{
+		if (vkCreateSemaphore(mDevice, &semaphoreInfo, nullptr, &mImageAvailableSemaphores[i]) != VK_SUCCESS
+			|| vkCreateSemaphore(mDevice, &semaphoreInfo, nullptr, &mRenderFinishedSemaphores[i]) != VK_SUCCESS
+			|| vkCreateFence(mDevice, &fenceInfo, nullptr, &mInFlightFences[i]) != VK_SUCCESS)
+		{
+			throw std::runtime_error("Failed to create semaphores");
+		}
+	}
 }
