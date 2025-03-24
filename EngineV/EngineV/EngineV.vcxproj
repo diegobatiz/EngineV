@@ -15,6 +15,7 @@
     <ClCompile Include="Source\Buffer.cpp" />
     <ClCompile Include="Source\BufferCreation.cpp" />
     <ClCompile Include="Source\CommandPool.cpp" />
+    <ClCompile Include="Source\DescriptorPool.cpp" />
     <ClCompile Include="Source\DescriptorSetLayout.cpp" />
     <ClCompile Include="Source\EngineV.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -41,6 +42,7 @@
     <ClInclude Include="Source\Buffer.h" />
     <ClInclude Include="Source\BufferCreation.h" />
     <ClInclude Include="Source\CommandPool.h" />
+    <ClInclude Include="Source\DescriptorPool.h" />
     <ClInclude Include="Source\DescriptorSetLayout.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GraphicsPipeline.h" />

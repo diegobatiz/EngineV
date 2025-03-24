@@ -12,6 +12,7 @@ namespace EngineV
 	class GraphicsPipeline;
 	class CommandPool;
 	class Texture;
+	class DescriptorPool;
 
 #ifdef NDEBUG
 	const bool gEnableValidationLayers = false;
@@ -19,7 +20,7 @@ namespace EngineV
 	const bool gEnableValidationLayers = true;
 #endif
 
-#define MAX_FRAMES_IN_FLIGHT 2;
+#define MAX_FRAMES_IN_FLIGHT 2
 
 	const std::vector<const char*> gValidationLayers =
 	{
@@ -106,7 +107,8 @@ namespace EngineV
 		Texture* mLandscapeTexture = nullptr;
 		TypedBuffer<VertexPCT>* mVertexBuffer = nullptr;
 		TypedBuffer<uint16_t>* mIndexBuffer = nullptr;
-		std::vector<UniformBuffer<WorldView>*> mUniformBuffers;
+		std::vector<UniformBuffer> mUniformBuffers;
+		DescriptorPool* mDescriptorPool = nullptr;
 
 		VkInstance mInstance;
 		VkDebugUtilsMessengerEXT mDebugMessenger;

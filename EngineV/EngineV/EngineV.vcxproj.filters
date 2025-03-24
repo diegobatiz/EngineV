@@ -57,6 +57,9 @@
     <ClCompile Include="Source\BufferCreation.cpp">
       <Filter>Source\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DescriptorPool.cpp">
+      <Filter>Source\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -105,6 +108,9 @@
       <Filter>Source\Inc</Filter>
     </ClInclude>
     <ClInclude Include="Source\Buffer.h">
+      <Filter>Source\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DescriptorPool.h">
       <Filter>Source\Inc</Filter>
     </ClInclude>
   </ItemGroup>

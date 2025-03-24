@@ -33,3 +33,11 @@ void Buffer::Terminate()
 	vkDestroyBuffer(device, mBuffer, nullptr);
 	vkFreeMemory(device, mBufferMemory, nullptr);
 }
+
+void EngineV::UniformBuffer::CreateUniformBuffer(VkBufferUsageFlags usage)
+{
+	CreateBuffer(*mRenderer, mBufferSize, usage, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, mBuffer, mBufferMemory);
+
+	VkDevice device = mRenderer->GetDevice();
+	vkMapMemory(device, mBufferMemory, 0, mBufferSize, 0, &mBufferMapped);
+}

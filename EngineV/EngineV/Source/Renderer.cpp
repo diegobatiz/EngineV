@@ -9,6 +9,7 @@
 #include "GraphicsPipeline.h"
 #include "CommandPool.h"
 #include "Texture.h"
+#include "DescriptorPool.h"
 
 namespace
 {
@@ -77,17 +78,16 @@ EngineV::Renderer::Renderer(const char* appName, const Window& window)
 
 	for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; ++i)
 	{
-		mUniformBuffers.push_back(new UniformBuffer<WorldView>());
+		mUniformBuffers.push_back(UniformBuffer());
 	}
+
+	mDescriptorPool = new DescriptorPool(*this);
 }
 
 EngineV::Renderer::~Renderer()
 {
-	for (auto buffer : mUniformBuffers)
-	{
-		delete buffer;
-		buffer = nullptr;
-	}
+	delete mDescriptorPool;
+	mDescriptorPool = nullptr;
 
 	delete mVertexBuffer;
 	mVertexBuffer = nullptr;
@@ -138,15 +138,17 @@ void EngineV::Renderer::Initialize()
 	mIndexBuffer->Initialize(*this, *mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indices);
 	for (auto buffer : mUniformBuffers)
 	{
-		buffer->Initialize(*this, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
+		buffer.Initialize<WorldView>(*this, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
 	}
+	mDescriptorPool->Initalize(static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT));
+	mDescriptorPool->InitializeDescriptorSets(mLayout->GetLayout(), mUniformBuffers, mLandscapeTexture->GetImageView(), mLandscapeTexture->GetSampler());
 }
 
 void EngineV::Renderer::Terminate()
 {
 	for (auto buffer : mUniformBuffers)
 	{
-		buffer->Terminate();
+		buffer.Terminate();
 	}
 	mIndexBuffer->Terminate();
 	mVertexBuffer->Terminate();

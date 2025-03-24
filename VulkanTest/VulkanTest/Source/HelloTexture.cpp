@@ -110,8 +110,8 @@ void HelloTextureApplication::initVulkan()
 	createTextureSampler();
 	createVertexBuffer();
 	createIndexBuffer();
-
 	createUniformBuffers();
+
 	createDescriptorPool();
 	createDescriptorSets();
 	createCommandBuffers();

@@ -11,6 +11,8 @@ namespace EngineV
 		Texture(const Renderer& renderer);
 		void Initalize(const CommandPool& commandPool);
 		void Terminate();
+		VkImageView GetImageView() const { return mTextureImageView; }
+		VkSampler GetSampler() const { return mTextureSampler; }
 
 	private:
 		void CreateTextureImage(const CommandPool& commandPool);

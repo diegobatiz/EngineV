@@ -9,10 +9,13 @@ namespace EngineV
 	{
 	public:
 		Buffer() = default;
-		virtual void Initalize(const Renderer& renderer, const CommandPool& commandPool, VkBufferUsageFlags usage, const void* data, VkDeviceSize size);
 		virtual void Terminate();
+		VkBuffer GetBuffer() { return mBuffer; }
+		VkBuffer GetBuffer() const { return mBuffer; }
 
 	protected:
+		void Initalize(const Renderer& renderer, const CommandPool& commandPool, VkBufferUsageFlags usage, const void* data, VkDeviceSize size);
+
 		const Renderer* mRenderer = nullptr;
 		VkBuffer mBuffer;
 		VkDeviceMemory mBufferMemory;
@@ -29,22 +32,22 @@ namespace EngineV
 		}
 	};
 	
-	template<class DataType>
+
 	class UniformBuffer final : public Buffer
 	{
 	public:
+		template<class DataType>
 		void Initialize(const Renderer& renderer, VkBufferUsageFlags usage)
 		{
 			mRenderer = &renderer;
-			VkDeviceSize bufferSize = sizeof(DataType);
+			mBufferSize = sizeof(DataType);
 
-			CreateBuffer(*mRenderer, bufferSize, usage, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, mBuffer, mBuffer);
-
-			VkDevice device = mRenderer->GetDevice();
-			vkMapMemory(device, mBufferMemory, 0, bufferSize, 0, &mBuffersMapped);
+			CreateUniformBuffer(usage);
 		}
-	
+
 	private:
+		void CreateUniformBuffer(VkBufferUsageFlags usage);
+		VkDeviceSize mBufferSize;
 		void* mBufferMapped;
 	};
 }
