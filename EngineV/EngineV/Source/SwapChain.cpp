@@ -16,13 +16,16 @@ SwapChain::SwapChain(const Renderer& renderer, const Window& window)
 
 void SwapChain::Initialize(QueueFamilyIndices indices, SwapChainSupportDetails details)
 {
-	CreateSwapchain(indices, details);
+	mIndices = indices;
+	mDetails = details;
+	CreateSwapchain(mIndices, mDetails);
 	CreateImageViews();
 }
 
 void SwapChain::CreateFramebuffers(VkRenderPass renderPass)
 {
 	mSwapChainFramebuffers.resize(mSwapChainImageViews.size());
+	mRenderPass = renderPass;
 
 	for (size_t i = 0; i < mSwapChainImageViews.size(); ++i)
 	{
@@ -50,11 +53,13 @@ void SwapChain::CreateFramebuffers(VkRenderPass renderPass)
 
 void SwapChain::CreateDepthResources(VkFormat depthFormat, const CommandPool& commandPool)
 {
-	CreateImage(*mRenderer, mSwapChainExtent.width, mSwapChainExtent.height, depthFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+	mDepthFormat = depthFormat;
+	mCommandPool = &commandPool;
+	CreateImage(*mRenderer, mSwapChainExtent.width, mSwapChainExtent.height, mDepthFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
 		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, mDepthImage, mDepthImageMemory);
-	mDepthImageView = CreateImageView(mRenderer->GetDevice(), mDepthImage, depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT);
+	mDepthImageView = CreateImageView(mRenderer->GetDevice(), mDepthImage, mDepthFormat, VK_IMAGE_ASPECT_DEPTH_BIT);
 
-	TransitionImageLayout(commandPool, mDepthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
+	TransitionImageLayout(commandPool, mDepthImage, mDepthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
 }
 
 void SwapChain::Terminate()
@@ -74,8 +79,30 @@ void SwapChain::Terminate()
 	}
 
 	vkDestroySwapchainKHR(device, mSwapChain, nullptr);
+}
 
-	mRenderer = nullptr;
+void SwapChain::Recreate()
+{
+	int width = 0, height = 0;
+
+	width = mWindow->GetWindowWidth();
+	height = mWindow->GetWindowHeight();
+	while (width == 0 || height == 0)
+	{
+		width = mWindow->GetWindowWidth();
+		height = mWindow->GetWindowHeight();
+		glfwWaitEvents();
+	}
+
+
+	vkDeviceWaitIdle(mRenderer->GetDevice());
+
+	Terminate();
+
+	CreateSwapchain(mIndices, mDetails);
+	CreateImageViews();
+	CreateDepthResources(mDepthFormat, *mCommandPool);
+	CreateFramebuffers(mRenderPass);
 }
 
 void SwapChain::CreateSwapchain(QueueFamilyIndices indices, SwapChainSupportDetails details)

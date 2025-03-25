@@ -24,6 +24,7 @@ public:
 		while (!mWindow.GetWindowClosed())
 		{
 			mWindow.PollEvents();
+			mRenderer->DrawFrame();
 		}
 	}
 

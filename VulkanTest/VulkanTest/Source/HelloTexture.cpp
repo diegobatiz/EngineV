@@ -111,7 +111,6 @@ void HelloTextureApplication::initVulkan()
 	createVertexBuffer();
 	createIndexBuffer();
 	createUniformBuffers();
-
 	createDescriptorPool();
 	createDescriptorSets();
 	createCommandBuffers();

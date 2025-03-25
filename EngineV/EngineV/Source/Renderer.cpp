@@ -180,6 +180,68 @@ void EngineV::Renderer::Terminate()
 	vkDestroyInstance(mInstance, nullptr);
 }
 
+void EngineV::Renderer::DrawFrame()
+{
+	vkWaitForFences(mDevice, 1, &mInFlightFences[mCurrentFrame], VK_TRUE, UINT64_MAX);
+	vkResetFences(mDevice, 1, &mInFlightFences[mCurrentFrame]);
+
+	uint32_t imageIndex;
+	VkResult result = vkAcquireNextImageKHR(mDevice, mSwapChain->GetSwapchain(), UINT64_MAX, mImageAvailableSemaphores[mCurrentFrame], VK_NULL_HANDLE, &imageIndex);
+
+	if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || mFrameBufferResized)
+	{
+		mFrameBufferResized = false;
+		mSwapChain->Recreate();
+	}
+	else if (result != VK_SUCCESS)
+	{
+		throw std::runtime_error("Failed to acquire swapchain image");
+	}
+
+	vkResetFences(mDevice, 1, &mInFlightFences[mCurrentFrame]);
+
+	updateUniformBuffer(mCurrentFrame);
+
+	vkResetCommandBuffer(mCommandBuffers[mCurrentFrame], 0);
+	recordCommandBuffer(mCommandBuffers[mCurrentFrame], imageIndex);
+
+	VkSubmitInfo submitInfo{};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+	VkSemaphore waitSemaphores[] = { mImageAvailableSemaphores[mCurrentFrame] };
+	VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+	submitInfo.waitSemaphoreCount = 1;
+	submitInfo.pWaitSemaphores = waitSemaphores;
+	submitInfo.pWaitDstStageMask = waitStages;
+	submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &mCommandBuffers[mCurrentFrame];
+
+	VkSemaphore signalSemaphores[] = { mRenderFinishedSemaphores[mCurrentFrame] };
+	submitInfo.signalSemaphoreCount = 1;
+	submitInfo.pSignalSemaphores = signalSemaphores;
+
+	if (vkQueueSubmit(mGraphicsQueue, 1, &submitInfo, mInFlightFences[mCurrentFrame]) != VK_SUCCESS)
+	{
+		throw std::runtime_error("Failed to submit draw command buffer");
+	}
+
+	VkPresentInfoKHR presentInfo{};
+	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+
+	presentInfo.waitSemaphoreCount = 1;
+	presentInfo.pWaitSemaphores = signalSemaphores;
+
+	VkSwapchainKHR swapChains[] = { mSwapChain };
+	presentInfo.swapchainCount = 1;
+	presentInfo.pSwapchains = swapChains;
+	presentInfo.pImageIndices = &imageIndex;
+	presentInfo.pResults = nullptr;
+
+	vkQueuePresentKHR(mPresentQueue, &presentInfo);
+
+	mCurrentFrame = (mCurrentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
+}
+
 VkPhysicalDevice EngineV::Renderer::GetPhysicalDevice() const
 {
 	return mPhysicalDevice->GetDevice();

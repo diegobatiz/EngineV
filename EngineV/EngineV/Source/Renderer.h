@@ -79,6 +79,8 @@ namespace EngineV
 
 		void Initialize();
 		void Terminate();
+		void WindowResized(bool resized) { mFrameBufferResized = resized; }
+		void DrawFrame();
 
 		VkInstance GetInstance() const { return mInstance; }
 		VkSurfaceKHR GetSurface() const { return mSurface; }
@@ -122,5 +124,8 @@ namespace EngineV
 		std::vector<VkSemaphore> mImageAvailableSemaphores;
 		std::vector<VkSemaphore> mRenderFinishedSemaphores;
 		std::vector<VkFence> mInFlightFences;
+
+		uint32_t mCurrentFrame = 0;
+		bool mFrameBufferResized = false;
 	};
 }

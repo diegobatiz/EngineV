@@ -16,8 +16,10 @@ namespace EngineV
 		void CreateFramebuffers(VkRenderPass renderPass);
 		void CreateDepthResources(VkFormat depthFormat, const CommandPool& commandPool);
 		void Terminate();
+		void Recreate();
 		const VkFormat GetSwapFormat() const { return mSwapChainImageFormat; }
 		VkExtent2D GetExtent() const { return mSwapChainExtent; }
+		VkSwapchainKHR GetSwapchain() const { return mSwapChain; }
 
 	private:
 		void CreateSwapchain(QueueFamilyIndices indices, SwapChainSupportDetails details);
@@ -30,6 +32,7 @@ namespace EngineV
 	private:
 		const Renderer* mRenderer = nullptr;
 		const Window* mWindow = nullptr;
+		const CommandPool* mCommandPool = nullptr;
 
 		VkSwapchainKHR mSwapChain;
 		std::vector<VkFramebuffer> mSwapChainFramebuffers;
@@ -42,5 +45,11 @@ namespace EngineV
 		VkImage mDepthImage;
 		VkDeviceMemory mDepthImageMemory;
 		VkImageView mDepthImageView;
+
+
+		QueueFamilyIndices mIndices;
+		SwapChainSupportDetails mDetails;
+		VkFormat mDepthFormat; 
+		VkRenderPass mRenderPass;
 	};
 }
