@@ -20,6 +20,10 @@ namespace EngineV
 		const VkFormat GetSwapFormat() const { return mSwapChainImageFormat; }
 		VkExtent2D GetExtent() const { return mSwapChainExtent; }
 		VkSwapchainKHR GetSwapchain() const { return mSwapChain; }
+		VkFramebuffer GetFramebuffer(int frame) const { return mSwapChainFramebuffers[frame]; }
+
+		void BindViewport(VkCommandBuffer commandBuffer);
+		void BindScissor(VkCommandBuffer commandBuffer);
 
 	private:
 		void CreateSwapchain(QueueFamilyIndices indices, SwapChainSupportDetails details);

@@ -39,6 +39,11 @@ void DescriptorPool::Terminate()
 	vkDestroyDescriptorPool(device, mDescriptorPool, nullptr);
 }
 
+void EngineV::DescriptorPool::Bind(VkCommandBuffer commandBuffer, int frame, VkPipelineLayout layout)
+{
+	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, layout, 0, 1, &mDescriptorSets[frame], 0, nullptr);
+}
+
 void DescriptorPool::InitializeDescriptorSets(VkDescriptorSetLayout layout, const std::vector<UniformBuffer>& buffers, VkImageView imageView, VkSampler sampler)
 {
 	std::vector<VkDescriptorSetLayout> layouts(mFrameCount, layout);

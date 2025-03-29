@@ -12,6 +12,9 @@ namespace EngineV
 		void Terminate();
 		VkRenderPass GetRenderPass() const { return mRenderPass; }
 
+		void Begin(VkFramebuffer framebuffer, VkExtent2D swapExtent, VkCommandBuffer commandBuffer, VkClearValue color);
+		void End(VkCommandBuffer commandBuffer);
+
 	private:
 		const Renderer* mRenderer = nullptr;
 		VkRenderPass mRenderPass;

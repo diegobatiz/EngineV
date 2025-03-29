@@ -12,6 +12,7 @@ namespace EngineV
 		void Initalize(uint32_t count);
 		void InitializeDescriptorSets(VkDescriptorSetLayout layout, const std::vector<UniformBuffer>& buffers, VkImageView imageView, VkSampler sampler);
 		void Terminate();
+		void Bind(VkCommandBuffer commandBuffer, int frame, VkPipelineLayout layout);
 
 	private:
 		const Renderer* mRenderer = nullptr;

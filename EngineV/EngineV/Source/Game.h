@@ -28,6 +28,11 @@ public:
 		}
 	}
 
+	void ResizeWindow() override
+	{
+		mRenderer->WindowResized(true);
+	}
+
 private:
 	EngineV::Window mWindow;
 	EngineV::Renderer* mRenderer;

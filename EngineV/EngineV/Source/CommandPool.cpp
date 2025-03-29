@@ -81,3 +81,30 @@ void CommandPool::EndSingleTimeCommands(VkCommandBuffer commandBuffer) const
 
 	vkFreeCommandBuffers(mRenderer->GetDevice(), mCommandPool, 1, &commandBuffer);
 }
+
+VkCommandBuffer EngineV::CommandPool::StartCommandBufferRecord(int frame)
+{
+	vkResetCommandBuffer(mCommandBuffers[frame], 0);
+
+	VkCommandBufferBeginInfo beginInfo{};
+	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	beginInfo.flags = 0;
+	beginInfo.pInheritanceInfo = nullptr;
+
+	if (vkBeginCommandBuffer(mCommandBuffers[frame], &beginInfo) != VK_SUCCESS)
+	{
+		throw std::runtime_error("Failed to begin recording command buffer");
+	}
+
+	return mCommandBuffers[frame];
+}
+
+void EngineV::CommandPool::EndCommandBufferRecord(VkCommandBuffer commandBuffer)
+{
+	vkCmdEndRenderPass(commandBuffer);
+
+	if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS)
+	{
+		throw std::runtime_error("Failed to record command buffer");
+	}
+}

@@ -87,6 +87,8 @@ namespace EngineV
 		VkDevice GetDevice() const { return mDevice; }
 		VkQueue GetGraphicsQueue() const { return mGraphicsQueue; }
 		VkPhysicalDevice GetPhysicalDevice() const;
+		float GetWidth() const;
+		float GetHeight() const;
 
 	private:
 		void CreateInstance();
@@ -108,8 +110,8 @@ namespace EngineV
 		GraphicsPipeline* mGraphicsPipeline = nullptr;
 		CommandPool* mCommandPool = nullptr;
 		Texture* mLandscapeTexture = nullptr;
-		TypedBuffer<VertexPCT>* mVertexBuffer = nullptr;
-		TypedBuffer<uint16_t>* mIndexBuffer = nullptr;
+		TypedBuffer mVertexBuffer;
+		TypedBuffer mIndexBuffer;
 		std::vector<UniformBuffer> mUniformBuffers;
 		DescriptorPool* mDescriptorPool = nullptr;
 

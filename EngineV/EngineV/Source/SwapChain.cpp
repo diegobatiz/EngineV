@@ -105,6 +105,26 @@ void SwapChain::Recreate()
 	CreateFramebuffers(mRenderPass);
 }
 
+void EngineV::SwapChain::BindViewport(VkCommandBuffer commandBuffer)
+{
+	VkViewport viewport{};
+	viewport.x = 0.0f;
+	viewport.y = 0.0f;
+	viewport.width = static_cast<float>(mSwapChainExtent.width);
+	viewport.height = static_cast<float>(mSwapChainExtent.height);
+	viewport.minDepth = 0.0f;
+	viewport.maxDepth = 1.0f;
+	vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
+}
+
+void EngineV::SwapChain::BindScissor(VkCommandBuffer commandBuffer)
+{
+	VkRect2D scissor{};
+	scissor.offset = { 0, 0 };
+	scissor.extent = mSwapChainExtent;
+	vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
+}
+
 void SwapChain::CreateSwapchain(QueueFamilyIndices indices, SwapChainSupportDetails details)
 {
 	VkSurfaceFormatKHR surfaceFormat = ChooseSwapSurfaceFormat(details.formats);

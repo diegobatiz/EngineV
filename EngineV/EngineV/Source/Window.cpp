@@ -7,7 +7,7 @@ namespace
 	static void FramebufferResizeCallback(GLFWwindow* window, int width, int height)
 	{
 		auto app = reinterpret_cast<EngineV::Application*>(glfwGetWindowUserPointer(window));
-		app->mFrameBufferResized = true;
+		app->ResizeWindow();
 	}
 }
 

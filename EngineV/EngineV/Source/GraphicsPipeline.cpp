@@ -195,6 +195,11 @@ void GraphicsPipeline::Terminate()
 	vkDestroyPipelineLayout(device, mLayout, nullptr);
 }
 
+void EngineV::GraphicsPipeline::Bind(VkCommandBuffer buffer)
+{
+	vkCmdBindPipeline(buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, mGraphicsPipeline);
+}
+
 VkShaderModule GraphicsPipeline::CreateShaderModule(const std::vector<char>& code)
 {
 	VkShaderModuleCreateInfo createInfo{};

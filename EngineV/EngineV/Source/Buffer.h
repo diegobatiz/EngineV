@@ -19,21 +19,24 @@ namespace EngineV
 		const Renderer* mRenderer = nullptr;
 		VkBuffer mBuffer;
 		VkDeviceMemory mBufferMemory;
+		VkBufferUsageFlags mUsage;
 	};
 
-	template<class DataType>
 	class TypedBuffer final : public Buffer
 	{
 	public:
+		template<class DataType>
 		void Initialize(const Renderer& renderer, const CommandPool& commandPool, VkBufferUsageFlags usage, const std::vector<DataType> data)
 		{
 			VkDeviceSize size = sizeof(data[0])* data.size();
 			TypedBuffer::Initalize(renderer, commandPool, usage, data.data(), size);
 		}
+
+		void Bind(VkCommandBuffer commandBuffer);
 	};
 	
 
-	class UniformBuffer final : public Buffer
+	class UniformBuffer : public Buffer
 	{
 	public:
 		template<class DataType>
@@ -44,6 +47,8 @@ namespace EngineV
 
 			CreateUniformBuffer(usage);
 		}
+
+		virtual void Update();
 
 	private:
 		void CreateUniformBuffer(VkBufferUsageFlags usage);

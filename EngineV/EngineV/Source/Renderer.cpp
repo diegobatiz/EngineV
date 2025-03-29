@@ -73,8 +73,6 @@ EngineV::Renderer::Renderer(const char* appName, const Window& window)
 	mGraphicsPipeline = new GraphicsPipeline(*this);
 	mCommandPool = new CommandPool(*this);
 	mLandscapeTexture = new Texture(*this);
-	mVertexBuffer = new TypedBuffer<VertexPCT>();
-	mIndexBuffer = new TypedBuffer<uint16_t>();
 
 	for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; ++i)
 	{
@@ -88,11 +86,6 @@ EngineV::Renderer::~Renderer()
 {
 	delete mDescriptorPool;
 	mDescriptorPool = nullptr;
-
-	delete mVertexBuffer;
-	mVertexBuffer = nullptr;
-	delete mIndexBuffer;
-	mIndexBuffer = nullptr;
 
 	delete mLandscapeTexture;
 	mLandscapeTexture = nullptr;
@@ -134,8 +127,8 @@ void EngineV::Renderer::Initialize()
 	mSwapChain->CreateDepthResources(mPhysicalDevice->GetDepthFormat(), *mCommandPool);
 	mSwapChain->CreateFramebuffers(mRenderPass->GetRenderPass());
 	mLandscapeTexture->Initalize(*mCommandPool);
-	mVertexBuffer->Initialize(*this, *mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, vertices);
-	mIndexBuffer->Initialize(*this, *mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indices);
+	mVertexBuffer.Initialize<VertexPCT>(*this, *mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, vertices);
+	mIndexBuffer.Initialize<uint16_t>(*this, *mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indices);
 	for (auto buffer : mUniformBuffers)
 	{
 		buffer.Initialize<WorldView>(*this, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
@@ -155,8 +148,8 @@ void EngineV::Renderer::Terminate()
 	}
 	mDescriptorPool->Terminate();
 	mLayout->Terminate();
-	mIndexBuffer->Terminate();
-	mVertexBuffer->Terminate();
+	mIndexBuffer.Terminate();
+	mVertexBuffer.Terminate();
 	mGraphicsPipeline->Terminate();
 	mRenderPass->Terminate();
 
@@ -200,10 +193,26 @@ void EngineV::Renderer::DrawFrame()
 
 	vkResetFences(mDevice, 1, &mInFlightFences[mCurrentFrame]);
 
-	updateUniformBuffer(mCurrentFrame);
 
-	vkResetCommandBuffer(mCommandBuffers[mCurrentFrame], 0);
-	recordCommandBuffer(mCommandBuffers[mCurrentFrame], imageIndex);
+	mUniformBuffers[mCurrentFrame].Update();
+	
+	//Record Command Buffer
+	VkCommandBuffer commandBuffer = mCommandPool->StartCommandBufferRecord(mCurrentFrame);
+
+	VkFramebuffer frambuffer = mSwapChain->GetFramebuffer(mCurrentFrame);
+	mRenderPass->Begin(frambuffer, mSwapChain->GetExtent(), commandBuffer, { {0.0f, 0.0f, 0.0f, 1.0f} });
+		mSwapChain->BindViewport(commandBuffer);
+		mSwapChain->BindScissor(commandBuffer);	
+
+		mVertexBuffer.Bind(commandBuffer);
+		mIndexBuffer.Bind(commandBuffer);
+
+		mDescriptorPool->Bind(commandBuffer, mCurrentFrame, mGraphicsPipeline->GetLayout());
+
+		vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
+	mRenderPass->End(commandBuffer);
+	
+	mCommandPool->EndCommandBufferRecord(commandBuffer);
 
 	VkSubmitInfo submitInfo{};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -214,7 +223,7 @@ void EngineV::Renderer::DrawFrame()
 	submitInfo.pWaitSemaphores = waitSemaphores;
 	submitInfo.pWaitDstStageMask = waitStages;
 	submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &mCommandBuffers[mCurrentFrame];
+	submitInfo.pCommandBuffers = &commandBuffer;
 
 	VkSemaphore signalSemaphores[] = { mRenderFinishedSemaphores[mCurrentFrame] };
 	submitInfo.signalSemaphoreCount = 1;
@@ -231,7 +240,7 @@ void EngineV::Renderer::DrawFrame()
 	presentInfo.waitSemaphoreCount = 1;
 	presentInfo.pWaitSemaphores = signalSemaphores;
 
-	VkSwapchainKHR swapChains[] = { mSwapChain };
+	VkSwapchainKHR swapChains[] = { mSwapChain->GetSwapchain() };
 	presentInfo.swapchainCount = 1;
 	presentInfo.pSwapchains = swapChains;
 	presentInfo.pImageIndices = &imageIndex;
@@ -245,6 +254,16 @@ void EngineV::Renderer::DrawFrame()
 VkPhysicalDevice EngineV::Renderer::GetPhysicalDevice() const
 {
 	return mPhysicalDevice->GetDevice();
+}
+
+float EngineV::Renderer::GetWidth() const
+{
+	return (float)mSwapChain->GetExtent().width;
+}
+
+float EngineV::Renderer::GetHeight() const
+{
+	{ return (float)mSwapChain->GetExtent().height; }
 }
 
 void EngineV::Renderer::CreateInstance()

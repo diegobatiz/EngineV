@@ -15,6 +15,8 @@ namespace EngineV
 		VkCommandPool GetCommandPool() const { return mCommandPool; }
 		VkCommandBuffer BeginSingleTimeCommands() const;
 		void EndSingleTimeCommands(VkCommandBuffer commandBuffer) const;
+		VkCommandBuffer StartCommandBufferRecord(int frame);
+		void EndCommandBufferRecord(VkCommandBuffer commandBuffer);
 
 	private:
 		const Renderer* mRenderer = nullptr;

@@ -10,6 +10,6 @@ namespace EngineV
 
 		virtual void Run();
 	
-		bool mFrameBufferResized = false;
+		virtual void ResizeWindow() {}
 	};
 }

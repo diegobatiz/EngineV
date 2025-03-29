@@ -74,3 +74,28 @@ void RenderPass::Terminate()
 	VkDevice device = mRenderer->GetDevice();
 	vkDestroyRenderPass(device, mRenderPass, nullptr);
 }
+
+void EngineV::RenderPass::Begin(VkFramebuffer framebuffer, VkExtent2D extent, VkCommandBuffer commandBuffer, VkClearValue color)
+{
+	VkRenderPassBeginInfo renderPassInfo{};
+	renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+	renderPassInfo.renderPass = mRenderPass;
+	renderPassInfo.framebuffer = framebuffer;
+	renderPassInfo.renderArea.offset = { 0, 0 };
+	renderPassInfo.renderArea.extent = extent;
+
+	//==========================================================================  ||  Set clear color here  ||  ============
+	std::array<VkClearValue, 2> clearValues{};
+	clearValues[0].color = color.color;
+	clearValues[1].depthStencil = { 1.0f, 0 };
+
+	renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
+	renderPassInfo.pClearValues = clearValues.data();
+
+	vkCmdBeginRenderPass(commandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+}
+
+void EngineV::RenderPass::End(VkCommandBuffer commandBuffer)
+{
+	vkCmdEndRenderPass(commandBuffer);
+}

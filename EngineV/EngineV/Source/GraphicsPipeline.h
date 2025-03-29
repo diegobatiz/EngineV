@@ -11,6 +11,8 @@ namespace EngineV
 		GraphicsPipeline(const Renderer& renderer);
 		void Initialize(const Vertex& vertexType, VkExtent2D swapChainExtent, VkDescriptorSetLayout layout, VkRenderPass renderPass);
 		void Terminate();
+		void Bind(VkCommandBuffer buffer);
+		VkPipelineLayout GetLayout() const { return mLayout; }
 
 	private:
 		VkShaderModule CreateShaderModule(const std::vector<char>& code);
