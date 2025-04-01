@@ -1,12 +1,11 @@
 #pragma once
 
+#include "Renderer.h"
+
 namespace EngineV
 {
-	class Renderer;
 	class Window;
 	class CommandPool;
-	struct QueueFamilyIndices;
-	struct SwapChainSupportDetails;
 
 	class SwapChain
 	{

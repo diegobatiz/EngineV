@@ -129,13 +129,14 @@ void EngineV::Renderer::Initialize()
 	mLandscapeTexture->Initalize(*mCommandPool);
 	mVertexBuffer.Initialize<VertexPCT>(*this, *mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, vertices);
 	mIndexBuffer.Initialize<uint16_t>(*this, *mCommandPool, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indices);
-	for (auto buffer : mUniformBuffers)
+	for (auto& buffer : mUniformBuffers)
 	{
 		buffer.Initialize<WorldView>(*this, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
 	}
 	mDescriptorPool->Initalize(static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT));
 	mDescriptorPool->InitializeDescriptorSets(mLayout->GetLayout(), mUniformBuffers, mLandscapeTexture->GetImageView(), mLandscapeTexture->GetSampler());
 	mCommandPool->CreateCommandBuffers();
+	CreateSyncObjects();
 }
 
 void EngineV::Renderer::Terminate()
@@ -201,6 +202,7 @@ void EngineV::Renderer::DrawFrame()
 
 	VkFramebuffer frambuffer = mSwapChain->GetFramebuffer(mCurrentFrame);
 	mRenderPass->Begin(frambuffer, mSwapChain->GetExtent(), commandBuffer, { {0.0f, 0.0f, 0.0f, 1.0f} });
+		mGraphicsPipeline->Bind(commandBuffer);
 		mSwapChain->BindViewport(commandBuffer);
 		mSwapChain->BindScissor(commandBuffer);	
 

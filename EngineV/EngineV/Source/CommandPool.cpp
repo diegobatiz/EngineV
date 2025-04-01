@@ -101,8 +101,6 @@ VkCommandBuffer EngineV::CommandPool::StartCommandBufferRecord(int frame)
 
 void EngineV::CommandPool::EndCommandBufferRecord(VkCommandBuffer commandBuffer)
 {
-	vkCmdEndRenderPass(commandBuffer);
-
 	if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS)
 	{
 		throw std::runtime_error("Failed to record command buffer");
