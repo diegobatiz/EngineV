@@ -65,14 +65,15 @@ void SwapChain::CreateDepthResources(VkFormat depthFormat, const CommandPool& co
 void SwapChain::Terminate()
 {
 	VkDevice device = mRenderer->GetDevice();
-	vkDestroyImageView(device, mDepthImageView, nullptr);
-	vkDestroyImage(device, mDepthImage, nullptr);
-	vkFreeMemory(device, mDepthImageMemory, nullptr);
-
 	for (size_t i = 0; i < mSwapChainFramebuffers.size(); ++i)
 	{
 		vkDestroyFramebuffer(device, mSwapChainFramebuffers[i], nullptr);
 	}
+
+	vkDestroyImageView(device, mDepthImageView, nullptr);
+	vkDestroyImage(device, mDepthImage, nullptr);
+	vkFreeMemory(device, mDepthImageMemory, nullptr);
+
 	for (size_t i = 0; i < mSwapChainImageViews.size(); ++i)
 	{
 		vkDestroyImageView(device, mSwapChainImageViews[i], nullptr);
@@ -81,7 +82,7 @@ void SwapChain::Terminate()
 	vkDestroySwapchainKHR(device, mSwapChain, nullptr);
 }
 
-void SwapChain::Recreate()
+void SwapChain::Recreate(SwapChainSupportDetails details)
 {
 	int width = 0, height = 0;
 
@@ -98,7 +99,7 @@ void SwapChain::Recreate()
 	vkDeviceWaitIdle(mRenderer->GetDevice());
 
 	Terminate();
-
+	mDetails = details;
 	CreateSwapchain(mIndices, mDetails);
 	CreateImageViews();
 	CreateDepthResources(mDepthFormat, *mCommandPool);
@@ -131,7 +132,7 @@ void SwapChain::CreateSwapchain(QueueFamilyIndices indices, SwapChainSupportDeta
 	VkPresentModeKHR presentMode = ChooseSwapPresentMode(details.presentModes);
 	VkExtent2D extent = ChooseSwapExtent(details.capabilities);
 
-	uint32_t imageCount = details.capabilities.minImageCount + 1;
+	uint32_t imageCount = MAX_FRAMES_IN_FLIGHT;
 	if (details.capabilities.maxImageCount > 0 && imageCount > details.capabilities.maxImageCount)
 	{
 		imageCount = details.capabilities.maxImageCount;

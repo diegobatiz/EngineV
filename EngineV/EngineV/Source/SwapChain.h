@@ -15,7 +15,7 @@ namespace EngineV
 		void CreateFramebuffers(VkRenderPass renderPass);
 		void CreateDepthResources(VkFormat depthFormat, const CommandPool& commandPool);
 		void Terminate();
-		void Recreate();
+		void Recreate(SwapChainSupportDetails details);
 		const VkFormat GetSwapFormat() const { return mSwapChainImageFormat; }
 		VkExtent2D GetExtent() const { return mSwapChainExtent; }
 		VkSwapchainKHR GetSwapchain() const { return mSwapChain; }

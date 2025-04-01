@@ -16,6 +16,7 @@ namespace EngineV
 		SwapChainSupportDetails GetSwapDetails();
 		VkPhysicalDevice GetDevice() const { return mPhysicalDevice; }
 		VkFormat GetDepthFormat() const { return mDepthFormat; }
+		SwapChainSupportDetails GetNewSwapDetails();
 
 	private:
 		bool IsDeviceSuitable(VkPhysicalDevice device);

@@ -90,6 +90,14 @@ SwapChainSupportDetails EngineV::PhysicalDevice::GetSwapDetails()
 	return *mSwapchainDetails;
 }
 
+SwapChainSupportDetails EngineV::PhysicalDevice::GetNewSwapDetails()
+{
+	delete mSwapchainDetails;
+
+	mSwapchainDetails = new SwapChainSupportDetails(QuerySwapChainSupport(mPhysicalDevice));
+	return *mSwapchainDetails;
+}
+
 bool PhysicalDevice::IsDeviceSuitable(VkPhysicalDevice device)
 {
 	QueueFamilyIndices indices = FindQueueFamilies(device);

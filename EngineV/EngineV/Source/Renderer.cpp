@@ -185,7 +185,7 @@ void EngineV::Renderer::DrawFrame()
 	if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || mFrameBufferResized)
 	{
 		mFrameBufferResized = false;
-		mSwapChain->Recreate();
+		mSwapChain->Recreate(mPhysicalDevice->GetNewSwapDetails());
 	}
 	else if (result != VK_SUCCESS)
 	{

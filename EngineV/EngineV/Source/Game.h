@@ -7,7 +7,7 @@ class Sandbox : public EngineV::Application
 public:
 	Sandbox()
 	{
-		mWindow.InitWindow(800, 600, this);
+		mWindow.InitWindow(1920, 1080, this);
 		mRenderer = new EngineV::Renderer("Sandbox", mWindow);
 		mRenderer->Initialize();
 	}
